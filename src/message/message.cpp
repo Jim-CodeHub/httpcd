@@ -163,20 +163,10 @@ void message::set_msg_body(const char *MIME)
 	return;
 }
 
+
+
+
 int main(void)
 {
-	message msg;
-	msg.set_msg_line(POST, "/a/b/c", HTTP_1_0);
-	msg.set_msg_head(Content_Type, "text/plain");
-	msg.set_msg_body("this is a test");
-	msg.set_msg_line(GET, "/b/c/d", HTTP_1_0);
-	msg.test_show_all();
-
-	message rmsg;
-
-	rmsg.set_msg_line(HTTP_1_1, _200, "OK");
-	rmsg.set_msg_head(Content_Type, "text/plain");
-	rmsg.set_msg_body("this is a response");
-	rmsg.test_show_all();
 }
 

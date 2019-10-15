@@ -1,26 +1,50 @@
+/**-----------------------------------------------------------------------------------------------------------------
+ * @file	message.hpp
+ * @brief	packetize and depacketize HTTP message
+ *
+ * Copyright (c) 2019-2019 Jim Zhang 30363086@qq.com
+ *------------------------------------------------------------------------------------------------------------------
+*/
+
+
 #ifndef __LIBHTTP_MESSAGE_HPP__
 #define __LIBHTTP_MESSAGE_HPP__
 
 
+/*-----------------------------------------------------------------------------------------------------------------
+ * 
+ *										LIBHTTP/MESSAGE INCLUDES 
+ *
+ *------------------------------------------------------------------------------------------------------------------
+*/
+
 #include <string>
-#include <iostream>
 #include <sstream>
-
-
-using namespace std;
 
 
 namespace NS_LIBHTTP{
 
 	
-enum method{
-	GET, HEAD, PUT, POST, TRACE, OPTIONS, DELETE
-};
+/*-----------------------------------------------------------------------------------------------------------------
+ * 
+ *										LIBHTTP/MESSAGE DATA BLOCK
+ *
+ *------------------------------------------------------------------------------------------------------------------
+*/
 
-enum version{
-	HTTP_0_9, HTTP_1_0, HTTP_1_1, HTTP_2_0
-};
+/**
+ *	@brief HTTP official request method 
+ **/
+enum method{GET, HEAD, PUT, POST, TRACE, OPTIONS, DELETE};
 
+/**
+ *	@brief HTTP official version 
+ **/
+enum version{HTTP_0_9, HTTP_1_0, HTTP_1_1, HTTP_2_0, HTTP_3_0};
+
+/**
+ *	@brief HTTP official status code 
+ **/
 enum stsCode{
 	_100 = 100, _101,
 	_200 = 200, _201, _202, _203, _204, _205, _206,
@@ -29,6 +53,9 @@ enum stsCode{
 	_500 = 500, _501, _502, _503, _504, _505
 };
 
+/**
+ *	@brief HTTP official request and response headers 
+ **/
 enum header{
 	/**< General headers */
 	Cache_Control, Connection, Date, Proxy_Connection, Trailer, Transfer_Encoding, Upgrade, Via, 
@@ -44,9 +71,11 @@ enum header{
 	/**< Response headers */
 	Accept_Ranges, Age, Allow, Authorization, Location, Proxy_Authenticate, Public, Retry_After,
 	Server, Title, Vary, Warning, WWW_Authenticate 
-};
+};//Content_ID? Content_Transfer_Encoding
 
-
+/**
+ *	@brief HTTP message class and function set 
+ **/
 class message{
 	public:
 		//message(); //TBD 
@@ -60,21 +89,10 @@ class message{
 
 		void set_msg_body(const char *body);
 
-		void test_show_line(){
-			std::cout << message_line <<std::endl;
-		}
+		//static string get_msg_line(const char *msg);
+		//static string get_msg_head(const char *msg);
+		//static string get_msg_body(const char *msg);
 
-		void test_show_head(){
-			std::cout << message_head<<std::endl;
-		}
-
-		void test_show_body(){
-			std::cout << message_body<<std::endl;
-		}
-
-		void test_show_all(){
-			std::cout << message_line + message_head + message_body<<std::endl;
-		}
 	private:
 		string message_line;
 		string message_head;
@@ -82,7 +100,7 @@ class message{
 };
 
 
-}
+} /* namespace NS_LIBHTTP */
 
 
 #endif /*__LIBHTTP_MESSAGE_HPP__*/
