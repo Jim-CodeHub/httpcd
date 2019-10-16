@@ -2,7 +2,7 @@
  * @file	message.cpp
  * @brief	packetize and depacketize HTTP message
  *
- * Copyright (c) 2019-2019 Jim Zhang 30363086@qq.com
+ * Copyright (c) 2019-2019 Jim Zhang 303683086@qq.com
  *------------------------------------------------------------------------------------------------------------------
 */
 
@@ -161,12 +161,5 @@ void message::set_msg_body(const char *MIME)
 	message_body += MIME;
 
 	return;
-}
-
-
-
-
-int main(void)
-{
 }
 

@@ -2,7 +2,7 @@
  * @file	message.hpp
  * @brief	packetize and depacketize HTTP message
  *
- * Copyright (c) 2019-2019 Jim Zhang 30363086@qq.com
+ * Copyright (c) 2019-2019 Jim Zhang 303683086@qq.com
  *------------------------------------------------------------------------------------------------------------------
 */
 
@@ -62,7 +62,7 @@ enum header{
 
 	/**< General entity headers */
 	Content_Base, Content_Encoding, Content_Language, Content_Length, Content_Location, Content_MD5, Content_Range, Content_Type,
-	ETag, Expires, Last_Modified, Range,
+	Content_ID, Content_Transfer_Encoding, ETag, Expires, Last_Modified, Range,
 
 	/**< Request headers */
 	Accept, Accept_Charset, Accept_Encoding, Accept_Language, Expect, From, Host, If_Modified_Since, If_Match, If_None_Match, 

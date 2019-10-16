@@ -2,7 +2,7 @@
  * @file	Base64.cpp
  * @brief   Base64 encoding and decoding for HTTP message	
  *
- * Copyright (c) 2019-2019 Jim Zhang 30363086@qq.com
+ * Copyright (c) 2019-2019 Jim Zhang 303683086@qq.com
  *------------------------------------------------------------------------------------------------------------------
 */
 
