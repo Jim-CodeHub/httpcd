@@ -152,7 +152,7 @@ void message::set_msg_head(const char *header, const char *val, const char *para
  *	@return		None
  *	@note		The function can be called repeatedly, BUT only to save the latest setting.
  **/
-void message::set_msg_body(const char *MIME)
+void message::set_msg_body(const unsigned char *MIME)
 {
 	string CRLF  = "\r\n";
 

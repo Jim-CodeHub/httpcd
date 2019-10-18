@@ -71,7 +71,10 @@ enum header{
 	/**< Response headers */
 	Accept_Ranges, Age, Allow, Authorization, Location, Proxy_Authenticate, Public, Retry_After,
 	Server, Title, Vary, Warning, WWW_Authenticate 
-};//Content_ID? Content_Transfer_Encoding
+};
+
+	//ETag, Expires, Last_Modified, Range,// this is not in MIME
+	//Content_Language, Content_Length, Content_MD5, Content_Range, //this i not in MIME
 
 /**
  *	@brief HTTP message class and function set 
@@ -87,11 +90,11 @@ class message{
 		void set_msg_head(enum header h, const char *val, const char *param = "");
 		void set_msg_head(const char *header, const char *val, const char *param = "");
 
-		void set_msg_body(const char *body);
+		void set_msg_body(const unsigned char *body);
 
-		//static string get_msg_line(const char *msg);
-		//static string get_msg_head(const char *msg);
-		//static string get_msg_body(const char *msg);
+		//static string get_msg_line(const void *msg);
+		//static string get_msg_head(const void *msg);
+		//static string get_msg_body(const void *msg);
 
 	private:
 		string message_line;
