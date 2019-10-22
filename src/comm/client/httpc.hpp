@@ -1,5 +1,5 @@
 /**-----------------------------------------------------------------------------------------------------------------
- * @file	commc.hpp
+ * @file	httpc.hpp
  * @brief   HTTP client-side communication 
  *
  * Copyright (c) 2019-2019 Jim Zhang 303683086@qq.com
@@ -7,20 +7,21 @@
 */
 
 
-#ifndef __LIBHTTP_COMMC_HPP__
-#define __LIBHTTP_COMMC_HPP__
-
-
-#include <socketc.hpp>
+#ifndef __LIBHTTP_HTTPC_HPP__
+#define __LIBHTTP_HTTPC_HPP__
 
 
 /*-----------------------------------------------------------------------------------------------------------------
  * 
- *										LIBHTTP/COMMC INCLUDES 
+ *										LIBHTTP/HTTPC INCLUDES 
  *
  *------------------------------------------------------------------------------------------------------------------
 */
 
+#include <socketc.hpp>
+
+
+using namespace NS_LIBSOCKET;
 
 
 namespace NS_LIBHTTP{
@@ -28,10 +29,15 @@ namespace NS_LIBHTTP{
 	
 /*-----------------------------------------------------------------------------------------------------------------
  * 
- *										LIBHTTP/COMMC DATA BLOCK
+ *										LIBHTTP/HTTPC DATA BLOCK
  *
  *------------------------------------------------------------------------------------------------------------------
 */
+
+class httpc : public socketc_tcp_v4{
+
+}; 
+
 
 /**
  *	@brief
@@ -41,5 +47,5 @@ namespace NS_LIBHTTP{
 } /* namespace NS_LIBHTTP */
 
 
-#endif /*__LIBHTTP_COMMC_HPP__*/
+#endif /*__LIBHTTP_HTTPC_HPP__*/
 

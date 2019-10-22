@@ -1,2 +1,5 @@
-# libHTTP
-open source HTTP C/S library with C++ language
+# Open source HTTP C/S library with C++ language
+
+# Note
+The library depends on library libSocket
+

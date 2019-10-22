@@ -1,25 +1,21 @@
 #-------------------------------------------------------------------------------------------------------
 #																									   #
-#								Makefile for libsocket source file 									   #
+#								Makefile for libHTTP source file 									   #
 #																									   #
 #-------------------------------------------------------------------------------------------------------
 
 
-PROJECT			=   HTTPcd
+PROJECT			=   httpcd
 
 CXX				=	g++
 
-PATH_LIB		=	$(shell pwd)/lib
-PATH_INC		=	$(shell pwd)/include
-LD_FLAGS		=	-L$(PATH_LIB) -lsocketcd -Wl,-rpath=$(PATH_LIB)
-
-CXXFLAGS		=	-Werror -std=c++11 -I$(PATH_INC)
+CXXFLAGS		=	-Werror -std=c++11
 CXXFLAGS       += 	-Wall
 #CXXFLAGS		+=  -g
 
 SUBDIRS 		=   src/comm/client src/comm/server src/message
 
-export CXX CXXFLAGS PATH_INC
+export CXX CXXFLAGS LD_FLAGS
 
 
 #-------------------------------------------------------------------------------------------------------
