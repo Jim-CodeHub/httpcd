@@ -1,5 +1,5 @@
 /**-----------------------------------------------------------------------------------------------------------------
- * @file	message.cpp
+ * @file	mime.cpp
  * @brief	packetize and depacketize HTTP message
  * @ref		RFC2045, RFC2046, RFC2047, RFC2049
  *
@@ -8,6 +8,8 @@
 */
 
 #include "mime.hpp"
+
+#if 0
 
 //术语
 //CRFL 代表 "\r\n"
@@ -72,7 +74,7 @@ enum mime_encd_data{
 					--paramterVal //a. 使用时是一样的，有引号的要去掉
 					边界分隔符不能超过70个(不包含前缀--)(1~70), 且不能以空白结尾
 					如果以空白结尾，则必须删除
-					组成字符可以是：数字、字母、下划线, (左右)圆括号, 加号, 除号, 逗号, :, =, ?, '
+					//组成字符可以是：数字、字母、下划线, (左右)圆括号, 加号, 除号, 逗号, :, =, ?, '
 
 					--paramterVal-- //b, 表示后面不再有part
 
@@ -141,3 +143,4 @@ uint64_t generateBoundary(void)
 	return mt();
 }
 
+#endif

@@ -1,19 +1,19 @@
 /**-----------------------------------------------------------------------------------------------------------------
- * @file	comm.hpp
- * @brief   HTTP client and server communication 
+ * @file	commd.hpp
+ * @brief   HTTP server-side communication 
  *
  * Copyright (c) 2019-2019 Jim Zhang 303683086@qq.com
  *------------------------------------------------------------------------------------------------------------------
 */
 
 
-#ifndef __LIBHTTP_COMM_HPP__
-#define __LIBHTTP_COMM_HPP__
+#ifndef __LIBHTTP_COMMD_HPP__
+#define __LIBHTTP_COMMD_HPP__
 
 
 /*-----------------------------------------------------------------------------------------------------------------
  * 
- *										LIBHTTP/COMM INCLUDES 
+ *										LIBHTTP/COMMD INCLUDES 
  *
  *------------------------------------------------------------------------------------------------------------------
 */
@@ -25,7 +25,7 @@ namespace NS_LIBHTTP{
 	
 /*-----------------------------------------------------------------------------------------------------------------
  * 
- *										LIBHTTP/COMM DATA BLOCK
+ *										LIBHTTP/COMMD DATA BLOCK
  *
  *------------------------------------------------------------------------------------------------------------------
 */
@@ -33,20 +33,10 @@ namespace NS_LIBHTTP{
 /**
  *	@brief
  **/
-class comm{
-	public:
-		http_client_init();
-		http_client_start();
-		http_client_end();
-		http_server_init();
-		http_server_start();
 
-	private:
-		http_server	
-};
 
 } /* namespace NS_LIBHTTP */
 
 
-#endif /*__LIBHTTP_COMM_HPP__*/
+#endif /*__LIBHTTP_COMMD_HPP__*/
 

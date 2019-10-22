@@ -39,7 +39,7 @@ static void decode_block(const char *base64In, unsigned char *binOut);
  **/
 void base64_encode(const unsigned char *binIn, char *base64Out)
 {
-	unsigned char bufCom[3], i = 0, j = 0, k = 0;
+	unsigned char bufCom[3], i = 0, j = 0;
 	char		  bufOut[4];
 
 	while('\0' != binIn[i])
@@ -73,7 +73,7 @@ void base64_encode(const unsigned char *binIn, char *base64Out)
  **/
 void base64_decode(const char *base64In, unsigned char *binOut)
 {
-	unsigned char bufOut[3], i = 0, j = 0, k = 0;
+	unsigned char bufOut[3], i = 0, j = 0;
 	char		  bufCom[4];
 
 	while('\0' != base64In[i])
@@ -144,27 +144,29 @@ static void encode_block(const unsigned char *binIn, char *base64Out)
  **/
 static void decode_block(const char *base64In, unsigned char *binOut)
 {
-	unsigned char i = 0; while('\0' != base64In[i]) i++; /**< Calculate data size */
+	unsigned char i = 0; while('\0' != base64In[i]) i++; /**< Calculate data size                         */
 
-	switch (i) /*< case 1,2,3 is to be compatible with the base64 variant schema of omitted '=' */
+	const unsigned char * _base64In = (const unsigned char *)base64In;
+
+	switch (i) /*< Case 1,2,3 is to be compatible with the base64 variant schema of omitted '='		      */
 	{
 		case 0: break;
 		case 1: 
-			binOut[0] = (base64_decode_table[base64In[0]] << 2											); 
+			binOut[0] = (base64_decode_table[_base64In[0]] << 2											  ); 
 			break;
 		case 2: 
-			binOut[0] = (base64_decode_table[base64In[0]] << 2) | (base64_decode_table[base64In[1]] >> 4); 
-			binOut[1] = (base64_decode_table[base64In[1]] << 4											); 
+			binOut[0] = (base64_decode_table[_base64In[0]] << 2) | (base64_decode_table[_base64In[1]] >> 4); 
+			binOut[1] = (base64_decode_table[_base64In[1]] << 4											  ); 
 			break;
 		case 3:
-			binOut[0] = (base64_decode_table[base64In[0]] << 2) | (base64_decode_table[base64In[1]] >> 4); 
-			binOut[1] = (base64_decode_table[base64In[1]] << 4) | (base64_decode_table[base64In[2]] >> 2); 
-			binOut[2] = (base64_decode_table[base64In[2]] << 6											); 
+			binOut[0] = (base64_decode_table[_base64In[0]] << 2) | (base64_decode_table[_base64In[1]] >> 4); 
+			binOut[1] = (base64_decode_table[_base64In[1]] << 4) | (base64_decode_table[_base64In[2]] >> 2); 
+			binOut[2] = (base64_decode_table[_base64In[2]] << 6											  ); 
 			break;
 		default:
-			binOut[0] = (base64_decode_table[base64In[0]] << 2) | (base64_decode_table[base64In[1]] >> 4); 
-			binOut[1] = (base64_decode_table[base64In[1]] << 4) | (base64_decode_table[base64In[2]] >> 2); 
-			binOut[2] = (base64_decode_table[base64In[2]] << 6) | (base64_decode_table[base64In[3]]     ); 
+			binOut[0] = (base64_decode_table[_base64In[0]] << 2) | (base64_decode_table[_base64In[1]] >> 4); 
+			binOut[1] = (base64_decode_table[_base64In[1]] << 4) | (base64_decode_table[_base64In[2]] >> 2); 
+			binOut[2] = (base64_decode_table[_base64In[2]] << 6) | (base64_decode_table[_base64In[3]]     ); 
 	}
 
 	return;

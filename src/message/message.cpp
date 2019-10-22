@@ -96,10 +96,11 @@ void message::set_msg_line(enum version v, enum stsCode sc, const char *reason)
  **/
 void message::set_msg_head(enum header h, const char *val, const char *param)
 {
-	string space = " ";
-	string colon = ":";
+	string space = " "	 ;
+	string colon = ":"	 ;
 	string CRLF  = "\r\n";
-	string semic = ";";
+	string semic = ";"	 ;
+	string _NULL = ""	 ;
 
 	const char *header[] = {
 	    "Cache-Control", "Connection", "Date", "Proxy-Connection", "Trailer", "Transfer-Encoding", "Upgrade", "Via", 
@@ -116,7 +117,7 @@ void message::set_msg_head(enum header h, const char *val, const char *param)
 
 	message_head += header[h] + colon + space; 
 	message_head += val;
-	message_head += ("" == param)?CRLF:(semic + space + param + CRLF);
+	message_head += (_NULL == param)?CRLF:(semic + space + param + CRLF);
 
 	return;
 }
@@ -133,14 +134,15 @@ void message::set_msg_head(enum header h, const char *val, const char *param)
  **/
 void message::set_msg_head(const char *header, const char *val, const char *param)
 {
-	string space = " ";
-	string colon = ":";
+	string space = " "	 ;
+	string colon = ":"	 ;
 	string CRLF  = "\r\n";
-	string semic = ";";
+	string semic = ";"	 ;
+	string _NULL = ""	 ;
 	
 	message_head += header + colon + space; 
 	message_head += val;
-	message_head += ("" == param)?CRLF:(semic + space + param + CRLF);
+	message_head += (_NULL == param)?CRLF:(semic + space + param + CRLF);
 
 	return;
 }
@@ -158,7 +160,7 @@ void message::set_msg_body(const unsigned char *MIME)
 
 	message_body = CRLF;
 
-	message_body += MIME;
+	//message_body += MIME;
 
 	return;
 }

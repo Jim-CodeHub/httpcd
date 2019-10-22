@@ -21,6 +21,7 @@
 #include <string>
 #include <sstream>
 
+using namespace std;
 
 namespace NS_LIBHTTP{
 
