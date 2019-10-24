@@ -11,7 +11,7 @@
 #define __LIBHTTP_MESSAGE_HPP__
 
 
-/*-----------------------------------------------------------------------------------------------------------------
+/*------------------------------------------------------------------------------------------------------------------
  * 
  *										LIBHTTP/MESSAGE INCLUDES 
  *
@@ -20,13 +20,12 @@
 
 #include <string>
 #include <sstream>
+#include "mime/mime.hpp"
 
-using namespace std;
 
 namespace NS_LIBHTTP{
 
-	
-/*-----------------------------------------------------------------------------------------------------------------
+/*------------------------------------------------------------------------------------------------------------------
  * 
  *										LIBHTTP/MESSAGE DATA BLOCK
  *
@@ -55,52 +54,54 @@ enum stsCode{
 };
 
 /**
- *	@brief HTTP official request and response headers 
+ *	@brief HTTP official general headers 
  **/
-enum header{
-	/**< General headers */
-	Cache_Control, Connection, Date, Proxy_Connection, Trailer, Transfer_Encoding, Upgrade, Via, 
+enum comm_header{
+	Cache_Control, Connection, Date, Proxy_Connection, Trailer, Transfer_Encoding, Upgrade, Via
+};
 
-	/**< General entity headers */
-	Content_Base, Content_Encoding, Content_Language, Content_Length, Content_Location, Content_MD5, Content_Range, Content_Type,
-	Content_ID, Content_Transfer_Encoding, ETag, Expires, Last_Modified, Range,
-
-	/**< Request headers */
+/**
+ *	@brief HTTP official request headers 
+ **/
+enum rqst_header{
 	Accept, Accept_Charset, Accept_Encoding, Accept_Language, Expect, From, Host, If_Modified_Since, If_Match, If_None_Match, 
-	If_Range, If_Unmodified_Since, Max_Forwards, Pragma, Proxy_Authorization, Referer, User_Agent,
+	If_Range, If_Unmodified_Since, Max_Forwards, Pragma, Proxy_Authorization, Referer, User_Agent
+};
 
-	/**< Response headers */
+/**
+ *	@brief HTTP official response headers 
+ **/
+enum rsps_header{
 	Accept_Ranges, Age, Allow, Authorization, Location, Proxy_Authenticate, Public, Retry_After,
 	Server, Title, Vary, Warning, WWW_Authenticate 
 };
 
-	//ETag, Expires, Last_Modified, Range,// this is not in MIME
-	//Content_Language, Content_Length, Content_MD5, Content_Range, //this i not in MIME
+/**
+ *	@brief HTTP official entity headers 
+ **/
+enum body_header{
+	Content_Encoding, Content_Language, Content_Length, Content_MD5, Content_Range, ETag, Expires, Last_Modified, Range
+}; 
 
 /**
  *	@brief HTTP message class and function set 
  **/
-class message{
+class message : public mime{
 	public:
 		//message(); //TBD 
 
-		void set_msg_line(enum method m, const char *URL, enum version v);
-		void set_msg_line(const char *method, const char *URL, enum version v);
-		void set_msg_line(enum version v, enum stsCode, const char *reason = "");
+		void set_msg_line(enum method m,      const char *URL, enum version v		 );
+		void set_msg_line(const char *method, const char *URL, enum version v		 );
+		void set_msg_line(enum version v, enum stsCode, const char *reason = ""		 );
 
-		void set_msg_head(enum header h, const char *val, const char *param = "");
+		void set_msg_head(enum comm_header h, const char *val, const char *param = "");
+		void set_msg_head(enum rqst_header h, const char *val, const char *param = "");
+		void set_msg_head(enum rsps_header h, const char *val, const char *param = "");
+		void set_msg_head(enum body_header h, const char *val, const char *param = "");
 		void set_msg_head(const char *header, const char *val, const char *param = "");
-
-		void set_msg_body(const unsigned char *body);
-
-		//static string get_msg_line(const void *msg);
-		//static string get_msg_head(const void *msg);
-		//static string get_msg_body(const void *msg);
 
 	private:
 		string message_line;
-		string message_head;
-		string message_body;
 };
 
 

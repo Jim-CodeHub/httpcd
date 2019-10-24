@@ -34,14 +34,17 @@ namespace NS_LIBHTTP{
  *------------------------------------------------------------------------------------------------------------------
 */
 
-class httpc : public socketc_tcp_v4{
-
-}; 
-
-
 /**
- *	@brief
+ *	@brief HTTP client class with socket tcp v4 client
  **/
+class httpc : public socketc_tcp_v4{
+	public:
+		void client_init(const char *ip);
+
+		//url functions, DNS catch TBD
+
+	private:
+}; 
 
 
 } /* namespace NS_LIBHTTP */

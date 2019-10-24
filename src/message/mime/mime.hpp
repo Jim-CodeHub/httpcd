@@ -12,39 +12,67 @@
 #define __LIBHTTP_MIME_HPP__
 
 
-/*-----------------------------------------------------------------------------------------------------------------
+/*------------------------------------------------------------------------------------------------------------------
  * 
  *											LIBHTTP/MIME INCLUDES 
  *
  *------------------------------------------------------------------------------------------------------------------
 */
+
+#include <random>
+#include <chrono>
+#include <sstream>
 #include "encoding/Base64.hpp"
+
+
+
+#include <iostream>
+using namespace std;
 
 
 namespace NS_LIBHTTP{
 
 
-/*-----------------------------------------------------------------------------------------------------------------
+/*------------------------------------------------------------------------------------------------------------------
  * 
- *										   LIBHTTP/MESSAGE DATA BLOCK
+ *										    LIBHTTP/MIME DATA BLOCK
  *
  *------------------------------------------------------------------------------------------------------------------
 */
-class mime{
-	public:
 
-
+/**
+ *	@brief MIME official headers 
+ **/
+enum mime_header{
+	Content_Base, Content_Location, Content_Type, Content_ID, Content_Transfer_Encoding, MIME_Version
 };
 
+/**
+ *	@brief MIME Content-Type field, multipart sub types 
+ **/
+enum mime_mulsub{mixed, alternative, digest, parallel, related};
+
+/**
+ *	@brief MIME class and function set 
+ **/
+class mime{
+	public:
+		void set_msg_head(enum mime_header h, const char *val, const char *param = "");
+		void set_mul_head(enum mime_mulsub);
+
+
+		void show(void){cout << message_head<< endl;}
+		void showb(void){cout << message_body<< endl;}
+
+	protected:
+		string message_head;
+		string message_body;
+
+		string construct_boundary(void);
+};
 
 	
-}
-/*-----------------------------------------------------------------------------------------------------------------
- * 
- *								       LIBHTTP/MESSAGE FUNCTIONS DECLARATION
- *
- *------------------------------------------------------------------------------------------------------------------
-*/
+} /*< NS_LIBHTTP */
 
 
 #endif /*__LIBHTTP_MIME_HPP__*/

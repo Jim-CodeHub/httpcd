@@ -12,6 +12,14 @@
 using namespace NS_LIBHTTP;
 
 
+/*
+--------------------------------------------------------------------------------------------------------------------
+*
+*			                                  FUNCTIONS IMPLEMENT
+*
+--------------------------------------------------------------------------------------------------------------------
+*/
+
 /**
  *	@brief	    Packetize HTTP request line with official method	
  *	@param[in]  m	- GET/HEAD/PUT...	
@@ -85,16 +93,16 @@ void message::set_msg_line(enum version v, enum stsCode sc, const char *reason)
 }
 
 /**
- *	@brief	    Packetize HTTP header with official headers 
- *	@param[in]  header - Cache_Control/Content_Base/Accept... 
+ *	@brief	    Packetize HTTP header with official general headers 
+ *	@param[in]  header - general headers 
  *	@param[in]  val	   - the value of the header	
- *	@param[in]  param   - optional param of the val 
+ *	@param[in]  param  - optional param of the val 
  *	@param[out] None
  *	@return		None
  *	@note		The function can be called repeatedly, AND all values can be saved.
  *	@warning	Except for certain headers, other headers should not be repeated
  **/
-void message::set_msg_head(enum header h, const char *val, const char *param)
+void message::set_msg_head(enum comm_header h, const char *val, const char *param)
 {
 	string space = " "	 ;
 	string colon = ":"	 ;
@@ -103,16 +111,96 @@ void message::set_msg_head(enum header h, const char *val, const char *param)
 	string _NULL = ""	 ;
 
 	const char *header[] = {
-	    "Cache-Control", "Connection", "Date", "Proxy-Connection", "Trailer", "Transfer-Encoding", "Upgrade", "Via", 
+		"Cache-Control", "Connection", "Date", "Proxy-Connection", "Trailer", "Transfer-Encoding", "Upgrade", "Via"
+	};
 
-	    "Content-Base", "Content-Encoding", "Content-Language", "Content-Length", "Content-Location", "Content-MD5", "Content-Range", "Content-Type",
-	    "ETag", "Expires", "Last-Modified", "Range",
+	message_head += header[h] + colon + space; 
+	message_head += val;
+	message_head += (_NULL == param)?CRLF:(semic + space + param + CRLF);
 
-	    "Accept", "Accept-Charset", "Accept-Encoding", "Accept-Language", "Expect", "From", "Host", "If-Modified-Since", "If-Match", "If-None-Match", 
-	    "If-Range", "If-Unmodified-Since", "Max-Forwards", "Pragma", "Proxy-Authorization", "Referer", "User-Agent",
+	return;
+}
 
-		"Accept_Ranges", "Age", "Allow", "Authorization", "Location", "Proxy_Authenticate", "Public", "Retry_After",
-		"Server", "Title", "Vary", "Warning", "WWW_Authenticate" 
+/**
+ *	@brief	    Packetize HTTP header with official request headers 
+ *	@param[in]  header - request headers 
+ *	@param[in]  val	   - the value of the header	
+ *	@param[in]  param  - optional param of the val 
+ *	@param[out] None
+ *	@return		None
+ *	@note		The function can be called repeatedly, AND all values can be saved.
+ *	@warning	Except for certain headers, other headers should not be repeated
+ **/
+void message::set_msg_head(enum rqst_header h, const char *val, const char *param)
+{
+	string space = " "	 ;
+	string colon = ":"	 ;
+	string CRLF  = "\r\n";
+	string semic = ";"	 ;
+	string _NULL = ""	 ;
+
+	const char *header[] = {
+		"Accept", "Accept-Charset", "Accept-Encoding", "Accept-Language", "Expect", "From", "Host", "If-Modified-Since", "If-Match", "If-None-Match", 
+		"If-Range", "If-Unmodified-Since", "Max-Forwards", "Pragma", "Proxy-Authorization", "Referer", "User-Agent"
+	};
+
+	message_head += header[h] + colon + space; 
+	message_head += val;
+	message_head += (_NULL == param)?CRLF:(semic + space + param + CRLF);
+
+	return;
+}
+
+/**
+ *	@brief	    Packetize HTTP header with official response headers 
+ *	@param[in]  header - response headers 
+ *	@param[in]  val	   - the value of the header	
+ *	@param[in]  param  - optional param of the val 
+ *	@param[out] None
+ *	@return		None
+ *	@note		The function can be called repeatedly, AND all values can be saved.
+ *	@warning	Except for certain headers, other headers should not be repeated
+ **/
+void message::set_msg_head(enum rsps_header h, const char *val, const char *param)
+{
+	string space = " "	 ;
+	string colon = ":"	 ;
+	string CRLF  = "\r\n";
+	string semic = ";"	 ;
+	string _NULL = ""	 ;
+
+	const char *header[] = {
+		"Accept-Ranges", "Age", "Allow", "Authorization", "Location", "Proxy-Authenticate", "Public", "Retry-After",
+		"Server", "Title", "Vary", "Warning", "WWW-Authenticate"
+	};
+
+	message_head += header[h] + colon + space; 
+	message_head += val;
+	message_head += (_NULL == param)?CRLF:(semic + space + param + CRLF);
+
+	return;
+}
+
+/**
+ *	@brief	    Packetize HTTP header with official entity headers 
+ *	@param[in]  header - entiry headers
+ *	@param[in]  val	   - the value of the header	
+ *	@param[in]  param  - optional param of the val 
+ *	@param[out] None
+ *	@return		None
+ *	@note		The function can be called repeatedly, AND all values can be saved.
+ *	@warning	Except for certain headers, other headers should not be repeated
+ **/
+void message::set_msg_head(enum body_header h, const char *val, const char *param)
+{
+	string space = " "	 ;
+	string colon = ":"	 ;
+	string CRLF  = "\r\n";
+	string semic = ";"	 ;
+	string _NULL = ""	 ;
+
+	const char *header[] = {
+		"Content-Encoding", "Content-Language", "Content-Length", "Content-MD5", "Content-Range", "ETag", "Expires", "Last-Modified", "Range"
 	};
 
 	message_head += header[h] + colon + space; 
@@ -143,24 +231,6 @@ void message::set_msg_head(const char *header, const char *val, const char *para
 	message_head += header + colon + space; 
 	message_head += val;
 	message_head += (_NULL == param)?CRLF:(semic + space + param + CRLF);
-
-	return;
-}
-
-/**
- *	@brief	    Packetize HTTP Entity body with MIME
- *	@param[in]  MIME	- HTTP Entity body  
- *	@param[out] None
- *	@return		None
- *	@note		The function can be called repeatedly, BUT only to save the latest setting.
- **/
-void message::set_msg_body(const unsigned char *MIME)
-{
-	string CRLF  = "\r\n";
-
-	message_body = CRLF;
-
-	//message_body += MIME;
 
 	return;
 }

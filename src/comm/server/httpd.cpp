@@ -1,12 +1,12 @@
 /**-----------------------------------------------------------------------------------------------------------------
- * @file	httpc.cpp
- * @brief   HTTP client-side communication 
+ * @file	httpd.cpp
+ * @brief   HTTP server-side communication 
  *
  * Copyright (c) 2019-2019 Jim Zhang 303683086@qq.com
  *------------------------------------------------------------------------------------------------------------------
 */
 
-#include "httpc.hpp"
+#include "httpd.hpp"
 
 
 using namespace NS_LIBHTTP;
@@ -20,14 +20,31 @@ using namespace NS_LIBHTTP;
 */
 
 /**
- *	@brief	    HTTP client init 
- *	@param[in]  ip - server ip address 
+ *	@brief	    HTTP server init 
+ *	@param[in]  ip		- server ip address 
+ *	@param[in]  msg_cgi - User's client message handler  
  *	@param[out] None
  *	@return		None
  **/
-void httpc::client_init(const char *ip)
+void httpd::server_init(const char *ip, CGI_T msg_cgi)
 {
-	socketc_tcp_v4::client_init(ip, LIBSOCKET_PORT_HTTP);
+	socketd_tcp_v4::server_init(ip, LIBSOCKET_PORT_HTTP, msg_cgi);
 
 	return;
 }
+
+/**
+ *	@brief	    HTTP server start 
+ *	@param[in]  method	- BLOCK/PPC/TPC/SELECT_TPC/POLL_TPC/EPOLL_TPC 
+ *	@param[in]  backlog	- Size of listen queue 
+ *	@param[out] None
+ *	@return		None
+ *	@note	    Select Multi-process services are used
+ **/
+void httpd::server_emit(int backlog)
+{
+	socketd_tcp_v4::server_emit(SELECT_TPC, backlog, 0);
+
+	return;
+}
+
