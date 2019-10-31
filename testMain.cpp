@@ -6,11 +6,11 @@ using namespace NS_LIBHTTP;
 
 int main(void)
 {
-	//message msg;
+	message msg;
 
-	//msg.set_msg_head(Content_Type, "hello val", "testparam");
-	//msg.set_msg_head(Content_Length, "hello val", "testparam");
-	//msg.show();
+	msg.set_mul_head(related);
+
+	msg.show();
 
 	mime m;
 

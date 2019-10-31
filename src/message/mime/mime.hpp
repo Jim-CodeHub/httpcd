@@ -60,6 +60,9 @@ class mime{
 		void set_msg_head(enum mime_header h, const char *val, const char *param = "");
 		void set_mul_head(enum mime_mulsub);
 
+		void set_msg_body(const void *data, size_t len);
+		void set_mul_part();
+		void set_mul_over();
 
 		void show(void){cout << message_head<< endl;}
 		void showb(void){cout << message_body<< endl;}
@@ -67,6 +70,8 @@ class mime{
 	protected:
 		string message_head;
 		string message_body;
+
+		string mul_boundary;
 
 		string construct_boundary(void);
 };
