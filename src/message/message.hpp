@@ -88,8 +88,6 @@ enum body_header{
  **/
 class message : public mime{
 	public:
-		//message(); //TBD 
-
 		void set_msg_line(enum method m,      const char *URL, enum version v		 );
 		void set_msg_line(const char *method, const char *URL, enum version v		 );
 		void set_msg_line(enum version v, enum stsCode, const char *reason = ""		 );

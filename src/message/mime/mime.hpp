@@ -22,13 +22,13 @@
 #include <random>
 #include <chrono>
 #include <sstream>
-#include "encoding/Base64.hpp"
+#include <unistd.h>
+#include <sys/types.h>
+#include <sys/stat.h>
+#include <fcntl.h>
 
 
-
-#include <iostream>
 using namespace std;
-
 
 namespace NS_LIBHTTP{
 
@@ -58,22 +58,20 @@ enum mime_mulsub{mixed, alternative, digest, parallel, related};
 class mime{
 	public:
 		void set_msg_head(enum mime_header h, const char *val, const char *param = "");
-		void set_mul_head(enum mime_mulsub);
+		void set_msg_head(enum mime_mulsub m, string &boundary);
 
+		void set_msg_body(const char *path, off_t offset, off_t len);
 		void set_msg_body(const void *data, size_t len);
-		void set_mul_part();
-		void set_mul_over();
+		void set_msg_part(string boundary, string data);
+		void set_msg_over(string boundary);
 
-		void show(void){cout << message_head<< endl;}
-		void showb(void){cout << message_body<< endl;}
+		string packaging_messages(void);
+
+		string construct_boundary(void);
 
 	protected:
 		string message_head;
 		string message_body;
-
-		string mul_boundary;
-
-		string construct_boundary(void);
 };
 
 	

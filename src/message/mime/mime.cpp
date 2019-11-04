@@ -79,12 +79,13 @@ void mime::set_msg_head(enum mime_header h, const char *val, const char *param)
 
 /**
  *	@brief	    Packetize MIME header with Content-Type headers in multipart type 
- *	@param[in]  m - Sub types of multipart   
+ *	@param[in]  m		 - Sub types of multipart   
+ *	@param[in]  boundary - Multipart boundary 
  *	@param[out] None
  *	@return		None
- *	@warning	The function SHOULD NOT BE called repeatedly to prevent head repeated
+ *	@warning	The function SHOULD NOT BE called repeatedly
  **/
-void mime::set_mul_head(enum mime_mulsub m)
+void mime::set_msg_head(enum mime_mulsub m, string &boundary)
 {
 	string space = " "	 ;
 	string colon = ":"	 ;
@@ -94,32 +95,128 @@ void mime::set_mul_head(enum mime_mulsub m)
 	string slash = "/"	 ;
 
 	const char *sub_type[] = {
-		"mime-mulsub{mixed", "alternative", "digest", "parallel", "related"
+		"mixed", "alternative", "digest", "parallel", "related"
 	};
 
 	message_head += "Content_Type" + colon + space; 
 	message_head += "multipart" + slash;
 	message_head += sub_type[m] + semic + space;
-	message_head += construct_boundary();  
+	message_head += boundary + CRLF;
 
 	return;
 }
 
+/**
+ *	@brief	    Packetize MIME body with any type of data in the file 
+ *	@param[in]  path   - file path 
+ *	@param[in]  offset - content start location 
+ *	@param[in]  len    - data length 
+ *	@param[out] None
+ *	@return		None
+ *	@note		The function can be called repeatedly, BUT only to save the latest setting.
+ *	@note		If param 'len' is set to zero or larger than the file length, all file content will be set to message 
+ **/
+void mime::set_msg_body(const char *path, off_t offset, off_t len)
+{
+	int fd, ret = 0		;
+	off_t off, size		;
+	string CRLF = "\r\n";
 
+	fd = open(path, O_RDONLY);
 
+	if (-1 == fd)  {throw "Body set failure : file open error";}
 
-#if 0
+	off = lseek(fd, offset, SEEK_END);
+		  lseek(fd, offset, SEEK_SET);
 
-//头部 首部类型
-	
-	Content_Type语法：
-		Content-Type: type/subtype; parameter //后面;parameter 是可选的
-		
-				multipart
-					1. 每个部分的前面使用分隔符分隔，最后一个部分的最后使用关闭分隔符标记
-					2. 每个部分，分隔符之后是头部，头部后面是空白行，然后使该部分的主体
-					3. 每个部分，可以没有头部，此时该部分的内容被理解为头部是默认值的情况(Content-Type: text/plain; charset=US-ASCII)
-					5. 分隔符和头部（包含part的头部）都表示为7bit的ASCII值，（头部经过扩展的除外RFC2047），而每个部分的body数据可以编码为自己想要的编码
-#endif
+	if (-1 == off) {throw "Body set failure : file seek error";}
 
+	size = ((0 == len) || (len >= off))?off:len;
+
+	char data[size]; //+ \0
+
+	ret = read(fd, data, len);
+
+	if (-1 == ret) {throw "Body set failure : file read error";}
+
+	message_body  = CRLF;
+	message_body += data + CRLF;
+
+	return;
+}
+
+/**
+ *	@brief	    Packetize MIME body with any type of data
+ *	@param[in]  data
+ *	@param[in]  len    - data length 
+ *	@param[out] None
+ *	@return		None
+ *	@note		The function can be called repeatedly, BUT only to save the latest setting.
+ **/
+void mime::set_msg_body(const void *data, size_t len)
+{
+	string CRLF   = "\r\n";
+
+	char *pdata   = (char *)data;
+
+	message_body  = CRLF;
+
+	while(len--) {message_body.append(1, *pdata); pdata++;}
+
+	message_body += CRLF;
+
+	return;
+}
+
+/**
+ *	@brief	    Packetize MIME body-part with boundary 
+ *	@param[in]  boundary - Multipart boundary 
+ *	@param[in]  data
+ *	@param[out] None
+ *	@return		None
+ *	@note		The function can be called repeatedly, AND all parts can be saved.
+ **/
+void mime::set_msg_part(string boundary, string data)
+{
+	string CRLF = "\r\n";
+	string PREF = "--"  ;
+
+	message_body += CRLF;
+	message_body += PREF + boundary + CRLF;
+	message_body += data + CRLF; 
+
+	return;
+}
+
+/**
+ *	@brief	    Packetize MIME body-part with boundary end sign 
+ *	@param[in]  boundary - Multipart boundary 
+ *	@param[out] None
+ *	@return		None
+ *	@note		The function works with function 'set_msg_part' to mark the body-part end 
+ *	@note		The function SHOULD NOT be called repeatedly
+ **/
+void mime::set_msg_over(string boundary)
+{
+	string CRLF = "\r\n";
+	string PREF = "--"  ;
+
+	message_body += PREF + boundary + PREF; 
+	message_body += CRLF;
+
+	return;
+}
+
+/**
+ *	@brief	    Packetize MIME messages
+ *	@param[in]  None 
+ *	@param[out] None
+ *	@return		MIME messages	
+ **/
+string mime::packaging_messages(void)
+{
+	string message = message_head + message_body;
+
+	return message;
+}
 
