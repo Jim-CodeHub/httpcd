@@ -21,6 +21,7 @@
 #include <string>
 #include <sstream>
 #include "mime/mime.hpp"
+#include "/home/jim/Project/libHTTP/src/util/string/_string.hpp"
 
 
 namespace NS_LIBHTTP{
@@ -97,6 +98,30 @@ class message : public mime{
 		void set_msg_head(enum rsps_header h, const char *val, const char *param = "");
 		void set_msg_head(enum body_header h, const char *val, const char *param = "");
 		void set_msg_head(const char *header, const char *val, const char *param = "");
+		void set_msg_head(const char *header, size_t      val, const char *param = "");
+
+		string packaging_messages(void);
+
+		/**< Get messages line's content											 */
+		static string get_msg_line	 (					  const void *message		 );
+		static string get_msg_method (					  const void *message		 );
+		static string get_msg_URL	 (					  const void *message		 );
+		static string get_msg_version(bool dir, 		  const void *message		 );
+		static string get_msg_status (					  const void *message		 );
+
+		/**< Get messages header content											 */
+		static string get_msg_head	 (					  const void *message		 );
+		static string get_msg_head	 (enum mime_header h, const void *message		 );
+
+		static string get_msg_head   (enum comm_header h, const void *message		 );
+		static string get_msg_head   (enum rqst_header h, const void *message		 );
+		static string get_msg_head   (enum rsps_header h, const void *message		 );
+		static string get_msg_head   (enum body_header h, const void *message		 );
+		static string get_msg_head   (const char *header, const void *message		 );
+
+		/**< Get messages body   content			 								 */
+		static string get_msg_body	 (					  const void *message		 );
+		static string get_msg_part	 (int pos,			  const void *message        );
 
 	private:
 		string message_line;

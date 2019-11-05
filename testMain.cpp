@@ -6,10 +6,14 @@
 using namespace std;
 using namespace NS_LIBHTTP;
 
+
 int main(void)
 {
 
 	message msg;
+
+	msg.set_msg_line(GET, "www.test.com", HTTP_1_1);
+
 
 	string bound = msg.construct_boundary();
 	msg.mime::set_msg_head(related, bound); 
@@ -29,7 +33,19 @@ int main(void)
 	msg.set_msg_part(bound, msg3.packaging_messages()); 
 	msg.set_msg_over(bound);
 
-	cout << msg.packaging_messages() << endl;
+	//msg.set_msg_head(Content_Length, to_string(msg.getBodySize()).c_str());
+	msg.set_msg_head("Content-Length", msg.getBodySize());
+
+	string m = msg.packaging_messages() ;
+
+	cout << m << endl;
+
+	cout << "-------------" << endl;
+
+	//cout << message::get_msg_body(m.c_str()) << endl;
+	
+	cout << message::get_msg_part(1, m.c_str()) << endl;
 
 	return 0;
 }
+

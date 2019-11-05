@@ -5,7 +5,7 @@
 #-------------------------------------------------------------------------------------------------------
 
 
-OBJS    = mime.o 
+OBJS    = _string.o 
 SUBDIRS = 
  
  
@@ -26,7 +26,7 @@ $(SUBDIRS):ECHO
 ECHO:
 
 %.o:%.cpp
-	$(CXX) $(CXXFLAGS) -c $^ -o $@
+	$(CXX) $(CXXFLAGS) -c $^ -o $@ -Werror=char-subscripts
 
 .PHONY:clean
 clean:

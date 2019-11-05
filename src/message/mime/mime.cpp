@@ -93,14 +93,16 @@ void mime::set_msg_head(enum mime_mulsub m, string &boundary)
 	string semic = ";"	 ;
 	string _NULL = ""	 ;
 	string slash = "/"	 ;
+	string equal = "="   ;
 
 	const char *sub_type[] = {
 		"mixed", "alternative", "digest", "parallel", "related"
 	};
 
-	message_head += "Content_Type" + colon + space; 
+	message_head += "Content-Type" + colon + space; 
 	message_head += "multipart" + slash;
 	message_head += sub_type[m] + semic + space;
+	message_head += "boundary" + equal; 
 	message_head += boundary + CRLF;
 
 	return;
@@ -161,7 +163,7 @@ void mime::set_msg_body(const void *data, size_t len)
 
 	message_body  = CRLF;
 
-	while(len--) {message_body.append(1, *pdata); pdata++;}
+	while(len--) {message_body += *pdata; pdata++;}
 
 	message_body += CRLF;
 
@@ -205,18 +207,5 @@ void mime::set_msg_over(string boundary)
 	message_body += CRLF;
 
 	return;
-}
-
-/**
- *	@brief	    Packetize MIME messages
- *	@param[in]  None 
- *	@param[out] None
- *	@return		MIME messages	
- **/
-string mime::packaging_messages(void)
-{
-	string message = message_head + message_body;
-
-	return message;
 }
 

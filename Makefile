@@ -13,7 +13,7 @@ CXXFLAGS		=	-Werror -std=c++11
 CXXFLAGS       += 	-Wall
 #CXXFLAGS		+=  -g
 
-SUBDIRS 		=   src/comm/client src/comm/server src/message
+SUBDIRS 		=   src/comm/client src/comm/server src/message src/util/encoding src/util/string
 
 export CXX CXXFLAGS LD_FLAGS
 

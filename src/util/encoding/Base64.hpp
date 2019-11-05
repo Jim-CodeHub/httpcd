@@ -1,6 +1,6 @@
 /**-----------------------------------------------------------------------------------------------------------------
  * @file	Base64.hpp
- * @brief   Base64 encoding and decoding for HTTP message	
+ * @brief   Base64 encoding and decoding
  * @ref		RFC2045
  *
  * Copyright (c) 2019-2019 Jim Zhang 303683086@qq.com
@@ -8,24 +8,13 @@
 */
 
 
-#ifndef __LIBHTTP_MIME_BASE64_HPP__
-#define __LIBHTTP_MIME_BASE64_HPP__
+#ifndef ___BASE64_HPP__
+#define ___BASE64_HPP__
 
 
 /*-----------------------------------------------------------------------------------------------------------------
  * 
- *										LIBHTTP/MIME/BASE64 INCLUDES 
- *
- *------------------------------------------------------------------------------------------------------------------
-*/
-
-
-namespace NS_LIBHTTP{
-
-
-/*-----------------------------------------------------------------------------------------------------------------
- * 
- *										LIBHTTP/MESSAGE/BASE64 DATA BLOCK
+ *										  BASE64 DATA BLOCK
  *
  *------------------------------------------------------------------------------------------------------------------
 */
@@ -55,12 +44,9 @@ const char base64_decode_table[] = {
 };
 
 
-} /*< NS_LIBHTTP */
-
-	
 /*-----------------------------------------------------------------------------------------------------------------
  * 
- *								    LIBHTTP/MESSAGE/BASE64 FUNCTIONS DECLARATION
+ *								    BASE64 FUNCTIONS DECLARATION
  *
  *------------------------------------------------------------------------------------------------------------------
 */
@@ -68,5 +54,5 @@ void base64_encode(const unsigned char *binIn, char *base64Out);
 void base64_decode(const char *base64In, unsigned char *binOut);
 
 
-#endif /*__LIBHTTP_MIME_BASE64_HPP__*/
+#endif /*__BASE64_HPP__*/
 

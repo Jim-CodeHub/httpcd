@@ -65,9 +65,9 @@ class mime{
 		void set_msg_part(string boundary, string data);
 		void set_msg_over(string boundary);
 
-		string packaging_messages(void);
-
 		string construct_boundary(void);
+
+		size_t getBodySize(void) { return message_body.size(); }
 
 	protected:
 		string message_head;
