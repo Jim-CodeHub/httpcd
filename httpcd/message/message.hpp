@@ -105,6 +105,11 @@ class message : public mime_message{
 		void set_msg_head(const string &field_name, const class field_body *body);
 		void set_msg_head(const string &field_name, const string &field_body	);
 
+		//void set_msg_body();
+
+		const string pack_msg(void												);
+		bool		 load_msg(const string message								);
+
 		const string &get_msg_line(void) const noexcept							 ;
 
 		const string get_msg_method(void) const noexcept						 ;
@@ -112,31 +117,15 @@ class message : public mime_message{
 		const string get_msg_URL(const void *message) const noexcept			 ;
 		const string get_msg_status(void) const noexcept						 ;
 
+		const string get_msg_head(enum MIME_FNAME fname_t) const noexcept		 ;
+		const string get_msg_head(enum comm_header h) const noexcept			 ;
+		const string get_msg_head(enum rqst_header h) const noexcept			 ;
+		const string get_msg_head(enum rsps_header h) const noexcept			 ;
+		const string get_msg_head(enum body_header h) const noexcept			 ;
+		const string get_msg_head(const string &head) const noexcept			 ;
 
-#if 0
-		string packaging_messages(void);
-
-		/**< Get messages line's content											 */
-		static string get_msg_line	 (					  const void *message		 );
-		static string get_msg_method (					  const void *message		 );
-		static string get_msg_URL	 (					  const void *message		 );
-		static string get_msg_version(bool dir, 		  const void *message		 );
-		static string get_msg_status (					  const void *message		 );
-
-		/**< Get messages header content											 */
-		static string get_msg_head	 (					  const void *message		 );
-		static string get_msg_head	 (enum mime_header h, const void *message		 );
-
-		static string get_msg_head   (enum comm_header h, const void *message		 );
-		static string get_msg_head   (enum rqst_header h, const void *message		 );
-		static string get_msg_head   (enum rsps_header h, const void *message		 );
-		static string get_msg_head   (enum body_header h, const void *message		 );
-		static string get_msg_head   (const char *header, const void *message		 );
-
-		/**< Get messages body   content			 								 */
-		static string get_msg_body	 (					  const void *message		 );
-		static string get_msg_part	 (int pos,			  const void *message        );
-#endif
+		//const string get_msg_part(string::size_type _inx						);
+		//const string get_msg_body(void);
 
 	private:
 		string message_line;

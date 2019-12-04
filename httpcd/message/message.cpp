@@ -265,53 +265,77 @@ const string message::get_msg_status(void) const noexcept
 	return str_tok.get_stok(1);
 }
 
-#if 0
-
 /**
- *	@brief	    Packetize HTTP messages
- *	@param[in]  None 
+ *	@brief	    Get message  header (RET field_body) with certain enumeration 
+ *	@param[in]  h  - certain header (IN  field_bame) enumeration      
  *	@param[out] None
- *	@return		HTTP messages	
+ *	@return		HTTP message header (field_body) or "" (empty)
  **/
-string message::packaging_messages(void)
+const string message::get_msg_head(enum MIME_FNAME fname_t) const noexcept 
 {
-	string message = message_line + message_head + message_body;
-
-	return message;
+	return this->header.get_field(fname_t).get_body();
 }
 
+/**
+ *	@brief	    Get message  header (RET field_body) with certain enumeration 
+ *	@param[in]  h  - certain header (IN  field_bame) enumeration      
+ *	@param[out] None
+ *	@return		HTTP message header (field_body) or "" (empty)
+ **/
+const string message::get_msg_head(enum comm_header h) const noexcept
+{
+	const char *header[] = {
+		"Cache-Control", "Connection", "Date", "Proxy-Connection", "Trailer", "Transfer-Encoding", "Upgrade", "Via"
+	};
 
-
+	return this->header.header::get_field(header[h]).get_body();
+}
 
 /**
- *	@brief	    Get message heads 
- *	@param[in]  message - HTTP message 
+ *	@brief	    Get message  header (RET field_body) with certain enumeration 
+ *	@param[in]  h  - certain header (IN  field_bame) enumeration      
  *	@param[out] None
- *	@return		HTTP message heads 
+ *	@return		HTTP message header (field_body) or "" (empty)
  **/
-string message::get_msg_head(const void *message)
+const string message::get_msg_head(enum rqst_header h) const noexcept
 {
-	string CRLF  = "\r\n";
-	string head;
+	const char *header[] = {
+		"Accept", "Accept-Charset", "Accept-Encoding", "Accept-Language", "Expect", "From", "Host", "If-Modified-Since", "If-Match", "If-None-Match", 
+		"If-Range", "If-Unmodified-Since", "Max-Forwards", "Pragma", "Proxy-Authorization", "Referer", "User-Agent"
+	};
 
-	char *p = (char *)message;
+	return this->header.header::get_field(header[h]).get_body();
+}
 
-	while((*p != '\r') || (*(p + 1) != '\n')) {p++;} /**< Pass line */
+/**
+ *	@brief	    Get message  header (RET field_body) with certain enumeration 
+ *	@param[in]  h  - certain header (IN  field_bame) enumeration      
+ *	@param[out] None
+ *	@return		HTTP message header (field_body) or "" (empty)
+ **/
+const string message::get_msg_head(enum rsps_header h) const noexcept
+{
+	const char *header[] = {
+		"Accept-Ranges", "Age", "Allow", "Authorization", "Location", "Proxy-Authenticate", "Public", "Retry-After",
+		"Server", "Title", "Vary", "Warning", "WWW-Authenticate"
+	};
 
-	p++; p++; /**< Pass CR & LF */
+	return this->header.header::get_field(header[h]).get_body();
+}
 
-	while(true)
-	{
-		if ((*p == '\r') && (*(p + 1) == '\n') && (*(p + 2) == '\r') && (*(p + 3) == '\n'))
-		{
-			head += CRLF; /**< Add the last CRLF */
-			break;
-		}
+/**
+ *	@brief	    Get message  header (RET field_body) with certain enumeration 
+ *	@param[in]  h  - certain header (IN  field_bame) enumeration      
+ *	@param[out] None
+ *	@return		HTTP message header (field_body) or "" (empty)
+ **/
+const string message::get_msg_head(enum body_header h) const noexcept
+{
+	const char *header[] = {
+		"Content-Encoding", "Content-Language", "Content-Length", "Content-MD5", "Content-Range", "ETag", "Expires", "Last-Modified", "Range"
+	};
 
-		head += *p; p++;
-	}
-
-	return head;
+	return this->header.header::get_field(header[h]).get_body();
 }
 
 /**
@@ -321,177 +345,56 @@ string message::get_msg_head(const void *message)
  *	@param[out] None
  *	@return		HTTP message head or "" (empty)
  **/
-string message::get_msg_head(const char *header, const void *message)
+const string message::get_msg_head(const string &head) const noexcept
 {
-	string head, set;
-
-	set = get_msg_head(message);
-
-	char *rPtr[1];
-
-	char *str = _strtok(set.c_str(), "\r\n", 1, rPtr);
-
-	while (NULL != str)
-	{
-		char *mPtr[1];
-		if (strcmp(_strtok(str, ":", 1, mPtr), header) == 0)
-		{
-			head = mPtr[0]; break;
-		}
-
-		str = _strtok(rPtr[0], "\r\n", 1, rPtr);
-	}
-
-	return head.erase(0, 1); /**< Delete header space */
+	return this->header.header::get_field(head).get_body();
 }
 
 /**
- *	@brief	    Get message header with certain enumeration 
- *	@param[in]  h       
- *	@param[in]  message - HTTP message 
+ *	@brief	    Packetize HTTP messages
+ *	@param[in]  None 
  *	@param[out] None
- *	@return		HTTP message head or "" (empty)
+ *	@return		HTTP messages	
  **/
-string message::get_msg_head(enum mime_header h, const void *message)
+const string message::pack_msg(void)
 {
-	const char *header[] = {
-		"Content-Base", "Content-Location", "Content-Type", "Content-ID", "Content-Transfer-Encoding", "MIME-Version"
-	};
-
-	return get_msg_head(header[h], message); 
+	return this->message_line + "\r\n" + this->make();
 }
 
 /**
- *	@brief	    Get message header with certain enumeration 
- *	@param[in]  h       
- *	@param[in]  message - HTTP message 
+ *	@brief	    Load HTTP message for further parsing
+ *	@param[in]  None 
  *	@param[out] None
- *	@return		HTTP message head or "" (empty)
+ *	@return		ture/flase (reserved interface) 	
  **/
-string message::get_msg_head(enum comm_header h, const void *message)
+bool message::load_msg(const string message)
 {
-	const char *header[] = {
-		"Cache-Control", "Connection", "Date", "Proxy-Connection", "Trailer", "Transfer-Encoding", "Upgrade", "Via"
-	};
+	/**<---------------------------------------------------------*/
+	/**< Load HTTP message line */
 
-	return get_msg_head(header[h], message); 
+	class string_token str_tok; str_tok.cut(message, "\r\n");
+
+	this->message_line = str_tok.get_stok(0);
+
+	/**<---------------------------------------------------------*/
+	/**< Load HTTP message entity */
+
+	string mime_entity = str_tok.get_stok(1);
+
+	return this->load(mime_entity);
 }
 
-/**
- *	@brief	    Get message header with certain enumeration 
- *	@param[in]  h       
- *	@param[in]  message - HTTP message 
- *	@param[out] None
- *	@return		HTTP message head or "" (empty)
- **/
-string message::get_msg_head(enum rqst_header h, const void *message)
-{
-	const char *header[] = {
-		"Accept", "Accept-Charset", "Accept-Encoding", "Accept-Language", "Expect", "From", "Host", "If-Modified-Since", "If-Match", "If-None-Match", 
-		"If-Range", "If-Unmodified-Since", "Max-Forwards", "Pragma", "Proxy-Authorization", "Referer", "User-Agent"
-	};
 
-	return get_msg_head(header[h], message); 
-}
 
-/**
- *	@brief	    Get message header with certain enumeration 
- *	@param[in]  h       
- *	@param[in]  message - HTTP message 
- *	@param[out] None
- *	@return		HTTP message head or "" (empty)
- **/
-string message::get_msg_head(enum rsps_header h, const void *message)
-{
-	const char *header[] = {
-		"Accept-Ranges", "Age", "Allow", "Authorization", "Location", "Proxy-Authenticate", "Public", "Retry-After",
-		"Server", "Title", "Vary", "Warning", "WWW-Authenticate"
-	};
+#if 0
 
-	return get_msg_head(header[h], message); 
-}
+		//void set_msg_body();
+		//const string get_msg_part(string::size_type _inx						);
+		//const string get_msg_body(void);
+		//
+		const class body_shadow &get_sdbody(void) const noexcept				  ;
 
-/**
- *	@brief	    Get message header with certain enumeration 
- *	@param[in]  h       
- *	@param[in]  message - HTTP message 
- *	@param[out] None
- *	@return		HTTP message head or "" (empty)
- **/
-string message::get_msg_head(enum body_header h, const void *message)
-{
-	const char *header[] = {
-		"Content-Encoding", "Content-Language", "Content-Length", "Content-MD5", "Content-Range", "ETag", "Expires", "Last-Modified", "Range"
-	};
-
-	return get_msg_head(header[h], message); 
-}
-
-/**
- *	@brief	    Get message entity body
- *	@param[in]  message - HTTP message 
- *	@param[out] None
- *	@return		HTTP message head or "" (empty)
- **/
-string message::get_msg_body(const void *message)
-{
-	int cLen	    ;
-	string body, len;
-
-	len = get_msg_head(Content_Length, message);
-
-	if ("" == len) { return ""; }
-
-	cLen = stoi(len);
-
-	if (0 == cLen) { return ""; }
-
-	char *p = (char *)message;
-
-	while(true)
-	{
-		if ((*p == '\r') && (*(p + 1) == '\n') && (*(p + 2) == '\r') && (*(p + 3) == '\n'))
-		{
-			p += 4; /**< Pass CRLF CRLF */
-			break;
-		}
-
-		p++;
-	}
-
-	while(cLen--) { body += *p; p++; }
-
-	return body;
-}
-
-/**
- *	@brief	    Get message certain part
- *	@param[in]  part	- one of body part 
- *	@param[in]  message - HTTP message 
- *	@param[out] None
- *	@return		HTTP message head or "" (empty or non multi mode)
- **/
-string message::get_msg_part(int part, const void *message)
-{
-	/**< Check legitimacy and Get boundary */
-	string type = get_msg_head(Content_Type, message);
-
-	if ("" == type) { return ""; }
-
-	string subType = type;
-	if (strcmp("multipart", _strtok(subType.c_str(), "/", 1)) != 0)
-	{
-		return "";	
-	}
-
-	string boundary = _strtok(type.c_str(), "=", 2);
-
-	/**< Get message part */
-	string s_bd = "--" + boundary, e_bd = s_bd + "--"; 
-
-	string body = get_msg_body(message);
-
-	return "";
-}
-
+		const class mime_entity *get_part(string::size_type _inx) const noexcept  ;
 #endif
+
+
