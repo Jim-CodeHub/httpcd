@@ -7,28 +7,29 @@
 */
 
 
-#ifndef __LIBHTTP_MESSAGE_HPP__
-#define __LIBHTTP_MESSAGE_HPP__
+#ifndef __MESSAGE_HPP__
+#define __MESSAGE_HPP__
 
 
 /*------------------------------------------------------------------------------------------------------------------
  * 
- *										LIBHTTP/MESSAGE INCLUDES 
+ *										HTTPCD/MESSAGE INCLUDES 
  *
  *------------------------------------------------------------------------------------------------------------------
 */
 
 #include <string>
 #include <sstream>
-#include "mime/mime.hpp"
-#include "/home/jim/Project/libHTTP/src/util/string/_string.hpp"
+#include <libmime/mime.hpp>
 
 
-namespace NS_LIBHTTP{
+using namespace NS_LIBMIME;
+
+namespace NS_HTTPCD{
 
 /*------------------------------------------------------------------------------------------------------------------
  * 
- *										LIBHTTP/MESSAGE DATA BLOCK
+ *										HTTPCD/MESSAGE DATA BLOCK
  *
  *------------------------------------------------------------------------------------------------------------------
 */
@@ -87,7 +88,8 @@ enum body_header{
 /**
  *	@brief HTTP message class and function set 
  **/
-class message : public mime{
+class message : public mime_message{
+#if 0
 	public:
 		void set_msg_line(enum method m,      const char *URL, enum version v		 );
 		void set_msg_line(const char *method, const char *URL, enum version v		 );
@@ -125,11 +127,12 @@ class message : public mime{
 
 	private:
 		string message_line;
+#endif
 };
 
 
-} /* namespace NS_LIBHTTP */
+} /* namespace NS_HTTPCD */
 
 
-#endif /*__LIBHTTP_MESSAGE_HPP__*/
+#endif /*__MESSAGE_HPP__*/
 

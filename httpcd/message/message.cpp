@@ -6,10 +6,10 @@
  *------------------------------------------------------------------------------------------------------------------
 */
 
-#include "message.hpp"
+#include <httpcd/message/message.hpp>
 
 
-using namespace NS_LIBHTTP;
+using namespace NS_HTTPCD;
 
 
 /*
@@ -20,6 +20,7 @@ using namespace NS_LIBHTTP;
 --------------------------------------------------------------------------------------------------------------------
 */
 
+#if 0
 /**
  *	@brief	    Packetize HTTP request line with official method	
  *	@param[in]  m	- GET/HEAD/PUT...	
@@ -546,3 +547,4 @@ string message::get_msg_part(int part, const void *message)
 	return "";
 }
 
+#endif

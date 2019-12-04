@@ -6,10 +6,10 @@
  *------------------------------------------------------------------------------------------------------------------
 */
 
-#include "httpc.hpp"
+#include <httpcd/comm/client/httpc.hpp>
 
 
-using namespace NS_LIBHTTP;
+using namespace NS_HTTPCD;
 
 /*
 --------------------------------------------------------------------------------------------------------------------
@@ -27,7 +27,7 @@ using namespace NS_LIBHTTP;
  **/
 void httpc::client_init(const char *ip)
 {
-	socketc_tcp_v4::client_init(ip, LIBSOCKET_PORT_HTTP);
+	socketc_tcp_v4::client_init(ip, SOCKETCD_PORT_HTTP);
 
 	return;
 }

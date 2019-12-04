@@ -6,10 +6,10 @@
  *------------------------------------------------------------------------------------------------------------------
 */
 
-#include "httpd.hpp"
+#include <httpcd/comm/server/httpd.hpp>
 
 
-using namespace NS_LIBHTTP;
+using namespace NS_HTTPCD;
 
 /*
 --------------------------------------------------------------------------------------------------------------------
@@ -28,7 +28,7 @@ using namespace NS_LIBHTTP;
  **/
 void httpd::server_init(const char *ip, CGI_T msg_cgi)
 {
-	socketd_tcp_v4::server_init(ip, LIBSOCKET_PORT_HTTP, msg_cgi);
+	socketd_tcp_v4::server_init(ip, SOCKETCD_PORT_HTTP, msg_cgi);
 
 	return;
 }

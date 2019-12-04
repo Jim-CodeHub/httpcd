@@ -1,14 +1,13 @@
-#include "src/message/message.hpp"
-#include "src/comm/client/httpc.hpp"
-#include "src/comm/server/httpd.hpp"
+#include <httpcd/httpcd.hpp>
 #include <iostream>
 
 using namespace std;
-using namespace NS_LIBHTTP;
+USING_NAMESPACE_HTTPCD;
 
 
 int main(void)
 {
+#if 0
 
 	message msg;
 
@@ -45,6 +44,7 @@ int main(void)
 	//cout << message::get_msg_body(m.c_str()) << endl;
 	
 	cout << message::get_msg_part(1, m.c_str()) << endl;
+#endif
 
 	return 0;
 }

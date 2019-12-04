@@ -7,29 +7,29 @@
 */
 
 
-#ifndef __LIBHTTP_HTTPC_HPP__
-#define __LIBHTTP_HTTPC_HPP__
+#ifndef __HTTPC_HPP__
+#define __HTTPC_HPP__
 
 
 /*-----------------------------------------------------------------------------------------------------------------
  * 
- *										LIBHTTP/HTTPC INCLUDES 
+ *										HTTPCD/HTTPC INCLUDES 
  *
  *------------------------------------------------------------------------------------------------------------------
 */
 
-#include <socketc.hpp>
+#include <socketcd/socketcd.hpp>
 
 
-using namespace NS_LIBSOCKET;
+using namespace NS_SOCKETCD;
 
 
-namespace NS_LIBHTTP{
+namespace NS_HTTPCD{
 
 	
 /*-----------------------------------------------------------------------------------------------------------------
  * 
- *										LIBHTTP/HTTPC DATA BLOCK
+ *										HTTPCD/HTTPC DATA BLOCK
  *
  *------------------------------------------------------------------------------------------------------------------
 */
@@ -47,8 +47,8 @@ class httpc : public socketc_tcp_v4{
 }; 
 
 
-} /* namespace NS_LIBHTTP */
+} /* namespace NS_HTTPCD */
 
 
-#endif /*__LIBHTTP_HTTPC_HPP__*/
+#endif /*__HTTPC_HPP__*/
 

@@ -1,12 +1,12 @@
 #-------------------------------------------------------------------------------------------------------
 #																									   #
-#								Makefile for libHTTP source file 									   #
+#								Makefile for HTTPCD source file 									   #
 #																									   #
 #-------------------------------------------------------------------------------------------------------
 
 
-OBJS    = _string.o 
-SUBDIRS = 
+OBJS    = 
+SUBDIRS = comm message 
  
  
 #-------------------------------------------------------------------------------------------------------
@@ -26,10 +26,9 @@ $(SUBDIRS):ECHO
 ECHO:
 
 %.o:%.cpp
-	$(CXX) $(CXXFLAGS) -c $^ -o $@ -Werror=char-subscripts
+	$(CXX) $(CXXFLAGS) -c $^ -o $@
 
 .PHONY:clean
 clean:
 	rm -rf *.o
-
 
