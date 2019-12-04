@@ -105,7 +105,7 @@ class message : public mime_message{
 		void set_msg_head(const string &field_name, const class field_body *body);
 		void set_msg_head(const string &field_name, const string &field_body	);
 
-		//void set_msg_body();
+		void set_msg_body(const char *body, string::size_type _size				);
 
 		const string pack_msg(void												);
 		bool		 load_msg(const string message								);
@@ -124,8 +124,9 @@ class message : public mime_message{
 		const string get_msg_head(enum body_header h) const noexcept			 ;
 		const string get_msg_head(const string &head) const noexcept			 ;
 
-		//const string get_msg_part(string::size_type _inx						);
-		//const string get_msg_body(void);
+		const string &get_msg_body(string::size_type &_size						);
+
+		const class mime_entity *get_msg_part(string::size_type _inx			);
 
 	private:
 		string message_line;

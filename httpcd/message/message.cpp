@@ -203,6 +203,53 @@ void message::set_msg_head(const string &field_name, const string &field_body)
 }
 
 /**
+ *	@brief	    Set message body
+ *	@param[in]  body 
+ *	@param[in]  _size - size of body 
+ *	@param[out] None
+ *	@return		None	
+ **/
+void message::set_msg_body(const char *body, string::size_type _size)
+{
+	this->sdbody.set(body, _size);
+	return;
+}
+
+/**
+ *	@brief	    Packetize HTTP messages
+ *	@param[in]  None 
+ *	@param[out] None
+ *	@return		HTTP messages	
+ **/
+const string message::pack_msg(void)
+{
+	return this->message_line + "\r\n" + this->make();
+}
+
+/**
+ *	@brief	    Load HTTP message for further parsing
+ *	@param[in]  None 
+ *	@param[out] None
+ *	@return		ture/flase (reserved interface) 	
+ **/
+bool message::load_msg(const string message)
+{
+	/**<---------------------------------------------------------*/
+	/**< Load HTTP message line */
+
+	class string_token str_tok; str_tok.cut(message, "\r\n");
+
+	this->message_line = str_tok.get_stok(0);
+
+	/**<---------------------------------------------------------*/
+	/**< Load HTTP message entity */
+
+	string mime_entity = str_tok.get_stok(1);
+
+	return this->load(mime_entity);
+}
+
+/**
  *	@brief	    Get message line
  *	@param[in]  None 
  *	@param[out] None
@@ -351,50 +398,28 @@ const string message::get_msg_head(const string &head) const noexcept
 }
 
 /**
- *	@brief	    Packetize HTTP messages
+ *	@brief	    Get message body and certain size 
  *	@param[in]  None 
- *	@param[out] None
- *	@return		HTTP messages	
+ *	@param[out] _size - size of body 
+ *	@return	    Message body	
  **/
-const string message::pack_msg(void)
+const string &message::get_msg_body(string::size_type &_size)
 {
-	return this->message_line + "\r\n" + this->make();
+	_size = this->sdbody.size(); 
+
+	return this->sdbody.get();
 }
 
 /**
- *	@brief	    Load HTTP message for further parsing
- *	@param[in]  None 
- *	@param[out] None
- *	@return		ture/flase (reserved interface) 	
+ *	@brief	    Get message part
+ *	@param[in]  _inx - part index 
+ *	@param[out] None 
+ *	@return	    Message part mime entity poniter OR NULL
+ *	@note		1. The function only get the brother part, to use the return pointer, if deeper part should be get
+ *				2. Check the return value, otherwise cause 'core dump' error
  **/
-bool message::load_msg(const string message)
+const class mime_entity *message::get_msg_part(string::size_type _inx)
 {
-	/**<---------------------------------------------------------*/
-	/**< Load HTTP message line */
-
-	class string_token str_tok; str_tok.cut(message, "\r\n");
-
-	this->message_line = str_tok.get_stok(0);
-
-	/**<---------------------------------------------------------*/
-	/**< Load HTTP message entity */
-
-	string mime_entity = str_tok.get_stok(1);
-
-	return this->load(mime_entity);
+	return this->get_part(_inx);
 }
-
-
-
-#if 0
-
-		//void set_msg_body();
-		//const string get_msg_part(string::size_type _inx						);
-		//const string get_msg_body(void);
-		//
-		const class body_shadow &get_sdbody(void) const noexcept				  ;
-
-		const class mime_entity *get_part(string::size_type _inx) const noexcept  ;
-#endif
-
 
