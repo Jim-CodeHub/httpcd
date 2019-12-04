@@ -20,7 +20,6 @@ using namespace NS_HTTPCD;
 --------------------------------------------------------------------------------------------------------------------
 */
 
-#if 0
 /**
  *	@brief	    Packetize HTTP request line with official method	
  *	@param[in]  m	- GET/HEAD/PUT...	
@@ -96,162 +95,177 @@ void message::set_msg_line(enum version v, enum stsCode sc, const char *reason)
 /**
  *	@brief	    Packetize HTTP header with official general headers 
  *	@param[in]  header - general headers 
- *	@param[in]  val	   - the value of the header	
- *	@param[in]  param  - optional param of the val 
+ *	@param[in]  body   - field_body which suiable the header (field_bame)
  *	@param[out] None
  *	@return		None
  *	@note		The function can be called repeatedly, AND all values can be saved.
  *	@warning	Except for certain headers, other headers should not be repeated
  **/
-void message::set_msg_head(enum comm_header h, const char *val, const char *param)
+void message::set_msg_head(enum comm_header h, const class field_body *body)
 {
-	string space = " "	 ;
-	string colon = ":"	 ;
-	string CRLF  = "\r\n";
-	string semic = ";"	 ;
-	string _NULL = ""	 ;
-
 	const char *header[] = {
 		"Cache-Control", "Connection", "Date", "Proxy-Connection", "Trailer", "Transfer-Encoding", "Upgrade", "Via"
 	};
 
-	message_head += header[h] + colon + space; 
-	message_head += val;
-	message_head += (_NULL == param)?CRLF:(semic + space + param + CRLF);
-
+	this->header.set(header[h], body);
 	return;
 }
 
 /**
  *	@brief	    Packetize HTTP header with official request headers 
  *	@param[in]  header - request headers 
- *	@param[in]  val	   - the value of the header	
- *	@param[in]  param  - optional param of the val 
+ *	@param[in]  body   - field_body which suiable the header (field_bame)
  *	@param[out] None
  *	@return		None
  *	@note		The function can be called repeatedly, AND all values can be saved.
  *	@warning	Except for certain headers, other headers should not be repeated
  **/
-void message::set_msg_head(enum rqst_header h, const char *val, const char *param)
+void message::set_msg_head(enum rqst_header h, const class field_body *body)
 {
-	string space = " "	 ;
-	string colon = ":"	 ;
-	string CRLF  = "\r\n";
-	string semic = ";"	 ;
-	string _NULL = ""	 ;
-
 	const char *header[] = {
 		"Accept", "Accept-Charset", "Accept-Encoding", "Accept-Language", "Expect", "From", "Host", "If-Modified-Since", "If-Match", "If-None-Match", 
 		"If-Range", "If-Unmodified-Since", "Max-Forwards", "Pragma", "Proxy-Authorization", "Referer", "User-Agent"
 	};
 
-	message_head += header[h] + colon + space; 
-	message_head += val;
-	message_head += (_NULL == param)?CRLF:(semic + space + param + CRLF);
-
+	this->header.set(header[h], body);
 	return;
 }
 
 /**
  *	@brief	    Packetize HTTP header with official response headers 
  *	@param[in]  header - response headers 
- *	@param[in]  val	   - the value of the header	
- *	@param[in]  param  - optional param of the val 
+ *	@param[in]  body   - field_body which suiable the header (field_bame)
  *	@param[out] None
  *	@return		None
  *	@note		The function can be called repeatedly, AND all values can be saved.
  *	@warning	Except for certain headers, other headers should not be repeated
  **/
-void message::set_msg_head(enum rsps_header h, const char *val, const char *param)
+void message::set_msg_head(enum rsps_header h, const class field_body *body)
 {
-	string space = " "	 ;
-	string colon = ":"	 ;
-	string CRLF  = "\r\n";
-	string semic = ";"	 ;
-	string _NULL = ""	 ;
-
 	const char *header[] = {
 		"Accept-Ranges", "Age", "Allow", "Authorization", "Location", "Proxy-Authenticate", "Public", "Retry-After",
 		"Server", "Title", "Vary", "Warning", "WWW-Authenticate"
 	};
 
-	message_head += header[h] + colon + space; 
-	message_head += val;
-	message_head += (_NULL == param)?CRLF:(semic + space + param + CRLF);
-
+	this->header.set(header[h], body);
 	return;
 }
 
 /**
  *	@brief	    Packetize HTTP header with official entity headers 
- *	@param[in]  header - entiry headers
- *	@param[in]  val	   - the value of the header	
- *	@param[in]  param  - optional param of the val 
+ *	@param[in]  header - entity headers
+ *	@param[in]  body   - field_body which suiable the header (field_bame)
  *	@param[out] None
  *	@return		None
  *	@note		The function can be called repeatedly, AND all values can be saved.
  *	@warning	Except for certain headers, other headers should not be repeated
  **/
-void message::set_msg_head(enum body_header h, const char *val, const char *param)
+void message::set_msg_head(enum body_header h, const class field_body *body)
 {
-	string space = " "	 ;
-	string colon = ":"	 ;
-	string CRLF  = "\r\n";
-	string semic = ";"	 ;
-	string _NULL = ""	 ;
-
 	const char *header[] = {
 		"Content-Encoding", "Content-Language", "Content-Length", "Content-MD5", "Content-Range", "ETag", "Expires", "Last-Modified", "Range"
 	};
 
-	message_head += header[h] + colon + space; 
-	message_head += val;
-	message_head += (_NULL == param)?CRLF:(semic + space + param + CRLF);
-
+	this->header.set(header[h], body);
 	return;
 }
 
 /**
- *	@brief	    Packetize HTTP header with extension headers 
- *	@param[in]  header
- *	@param[in]  val		- the value of the header	
- *	@param[in]  param   - optional param of the val 
+ *	@brief	    Packetize HTTP header with official entity headers 
+ *	@param[in]  header - entity headers
+ *	@param[in]  body   - field_body which suiable the header (field_bame)
  *	@param[out] None
  *	@return		None
  *	@note		The function can be called repeatedly, AND all values can be saved.
  *	@warning	Except for certain headers, other headers should not be repeated
  **/
-void message::set_msg_head(const char *header, const char *val, const char *param)
+void message::set_msg_head(const string &field_name, const class field_body *body)
 {
-	string space = " "	 ;
-	string colon = ":"	 ;
-	string CRLF  = "\r\n";
-	string semic = ";"	 ;
-	string _NULL = ""	 ;
-	
-	message_head += header + colon + space; 
-	message_head += val;
-	message_head += (_NULL == param)?CRLF:(semic + space + param + CRLF);
-
+	this->header.set(field_name, body);
 	return;
 }
 
 /**
- *	@brief	    Packetize HTTP header with extension headers 
- *	@param[in]  header
- *	@param[in]  val		- the value of the header	
- *	@param[in]  param   - optional param of the val 
+ *	@brief	    Packetize HTTP header with official entity headers 
+ *	@param[in]  header - entity headers
+ *	@param[in]  body   - field_body which suiable the header (field_bame)
  *	@param[out] None
  *	@return		None
  *	@note		The function can be called repeatedly, AND all values can be saved.
  *	@warning	Except for certain headers, other headers should not be repeated
  **/
-void message::set_msg_head(const char *header, size_t val, const char *param)
+void message::set_msg_head(const string &field_name, const string &field_body)
 {
-	set_msg_head(header, to_string(val).c_str(), param);
+	class string_body str_body(field_body );
+	this->header.set(field_name, &str_body);
 
 	return;
 }
+
+/**
+ *	@brief	    Get message line
+ *	@param[in]  None 
+ *	@param[out] None
+ *	@return		HTTP message line	
+ **/
+const string &message::get_msg_line(void) const noexcept
+{
+	return this->message_line;	
+}
+
+/**
+ *	@brief	    Get (request) message method
+ *	@param[in]	None 
+ *	@param[out] None
+ *	@return		HTTP message method 
+ **/
+const string message::get_msg_method(void) const noexcept
+{
+	class string_token str_tok(message_line, " ");
+
+	return str_tok.get_stok(0);
+}
+
+/**
+ *	@brief	    Get (request) message URL 
+ *	@param[in]  None 
+ *	@param[out] None
+ *	@return		HTTP message URL 
+ **/
+const string message::get_msg_URL(const void *message) const noexcept
+{
+	class string_token str_tok(message_line, " ");
+
+	return str_tok.get_stok(1);
+}
+
+/**
+ *	@brief	    Get (request/response) message version 
+ *	@param[in]  dir		- 1/true for reqeust, 0/flase for response 
+ *	@param[out] None
+ *	@return		HTTP message version 
+ **/
+const string message::get_msg_version(bool dir) const noexcept
+{
+	class string_token str_tok(message_line, " ");
+
+	return str_tok.get_stok((true==dir)?2:0);
+}
+
+/**
+ *	@brief	    Get (response) message status 
+ *	@param[in]  None 
+ *	@param[out] None
+ *	@return		HTTP message status 
+ **/
+const string message::get_msg_status(void) const noexcept
+{
+	class string_token str_tok(message_line, " ");
+
+	return str_tok.get_stok(1);
+}
+
+#if 0
 
 /**
  *	@brief	    Packetize HTTP messages
@@ -266,75 +280,8 @@ string message::packaging_messages(void)
 	return message;
 }
 
-/**
- *	@brief	    Get message line
- *	@param[in]  message - HTTP message 
- *	@param[out] None
- *	@return		HTTP message line	
- **/
-string message::get_msg_line(const void *message)
-{
-	string line;
 
-	char *p = (char *)message;
 
-	while((*p != '\r') || (*(p + 1) != '\n')) { line += *p; p++; }
-
-	return line;
-}
-
-/**
- *	@brief	    Get (request) message method
- *	@param[in]  message - HTTP method
- *	@param[out] None
- *	@return		HTTP message method 
- **/
-string message::get_msg_method(const void *message)
-{
-	string line  = get_msg_line(message);
-
-	return _strtok(line.c_str(), " ", 1);
-}
-
-/**
- *	@brief	    Get (request) message URL 
- *	@param[in]  message - HTTP message 
- *	@param[out] None
- *	@return		HTTP message URL 
- **/
-string message::get_msg_URL(const void *message)
-{
-	string line  = get_msg_line(message);
-
-	return _strtok(line.c_str(), " ", 2);
-}
-
-/**
- *	@brief	    Get (request/response) message version 
- *	@param[in]  dir		- 1/true for reqeust, 0/flase for response 
- *	@param[in]  message - HTTP message 
- *	@param[out] None
- *	@return		HTTP message version 
- **/
-string message::get_msg_version(bool dir, const void *message)
-{
-	string line  = get_msg_line(message);
-
-	return _strtok(line.c_str(), " ", (true==dir)?3:1);
-}
-
-/**
- *	@brief	    Get (response) message status 
- *	@param[in]  message - HTTP message 
- *	@param[out] None
- *	@return		HTTP message status 
- **/
-string message::get_msg_status(const void *message)
-{
-	string line  = get_msg_line(message);
-
-	return _strtok(line.c_str(), " ", 2);
-}
 
 /**
  *	@brief	    Get message heads 

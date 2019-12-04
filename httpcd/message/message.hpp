@@ -89,19 +89,31 @@ enum body_header{
  *	@brief HTTP message class and function set 
  **/
 class message : public mime_message{
-#if 0
 	public:
-		void set_msg_line(enum method m,      const char *URL, enum version v		 );
-		void set_msg_line(const char *method, const char *URL, enum version v		 );
-		void set_msg_line(enum version v, enum stsCode, const char *reason = ""		 );
+		void set_msg_line(enum method m,      const char *URL, enum version v	);
+		void set_msg_line(const char *method, const char *URL, enum version v	);
+		void set_msg_line(enum version v, enum stsCode, const char *reason = ""	);
 
-		void set_msg_head(enum comm_header h, const char *val, const char *param = "");
-		void set_msg_head(enum rqst_header h, const char *val, const char *param = "");
-		void set_msg_head(enum rsps_header h, const char *val, const char *param = "");
-		void set_msg_head(enum body_header h, const char *val, const char *param = "");
-		void set_msg_head(const char *header, const char *val, const char *param = "");
-		void set_msg_head(const char *header, size_t      val, const char *param = "");
+		void set_msg_head(enum comm_header h, const class field_body *body		);
+		void set_msg_head(enum rqst_header h, const class field_body *body		);
+		void set_msg_head(enum rsps_header h, const class field_body *body		);
+		void set_msg_head(enum body_header h, const class field_body *body		);
+		void set_msg_head(enum comm_header h, const string &field_body			);
+		void set_msg_head(enum rqst_header h, const string &field_body			);
+		void set_msg_head(enum rsps_header h, const string &field_body			);
+		void set_msg_head(enum body_header h, const string &field_body			);
+		void set_msg_head(const string &field_name, const class field_body *body);
+		void set_msg_head(const string &field_name, const string &field_body	);
 
+		const string &get_msg_line(void) const noexcept							 ;
+
+		const string get_msg_method(void) const noexcept						 ;
+		const string get_msg_version(bool dir) const noexcept					 ;
+		const string get_msg_URL(const void *message) const noexcept			 ;
+		const string get_msg_status(void) const noexcept						 ;
+
+
+#if 0
 		string packaging_messages(void);
 
 		/**< Get messages line's content											 */
@@ -124,10 +136,10 @@ class message : public mime_message{
 		/**< Get messages body   content			 								 */
 		static string get_msg_body	 (					  const void *message		 );
 		static string get_msg_part	 (int pos,			  const void *message        );
+#endif
 
 	private:
 		string message_line;
-#endif
 };
 
 
