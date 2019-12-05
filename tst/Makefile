@@ -1,5 +1,5 @@
 
-OBJS    = testMain 
+OBJS    = client server
 SUBDIRS = 
 
 PATH_LIBMIME 	=	$(shell dirname `pwd`)/contrib/libmime/install/lib
@@ -16,7 +16,7 @@ PATH_SOCKETCD   =	$(shell dirname `pwd`)/contrib/socketcd/install/lib
 .PHONY: all clean $(SUBDIRS)
 
 all:
-	for i in $(OBJS);															\
+	@for i in $(OBJS);															\
 	do																			\
 		g++ $(CXXFLAGS) "$$i".cpp 												\
 		-L$(PATH_SOCKETCD) -lsocketcd -Wl,-rpath=$(PATH_SOCKETCD)				\

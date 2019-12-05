@@ -36,7 +36,7 @@ export CXX CXXFLAGS TARGET
 #																									   #
 #-------------------------------------------------------------------------------------------------------
 
-.PHONY: all clean install $(SUBDIRS) tst contrib
+.PHONY: all clean install $(SUBDIRS) tst contrib tags
 
 all:$(SUBDIRS)
 	ar -rcs $(PROJECT).a $(shell find ./$(TARGET) -name "*.o")

@@ -90,43 +90,51 @@ enum body_header{
  **/
 class message : public mime_message{
 	public:
-		void set_msg_line(enum method m,      const char *URL, enum version v	);
-		void set_msg_line(const char *method, const char *URL, enum version v	);
-		void set_msg_line(enum version v, enum stsCode, const char *reason = ""	);
+		message() { this->nest = true; } /**< Empty constructure */					 ;
 
-		void set_msg_head(enum comm_header h, const class field_body *body		);
-		void set_msg_head(enum rqst_header h, const class field_body *body		);
-		void set_msg_head(enum rsps_header h, const class field_body *body		);
-		void set_msg_head(enum body_header h, const class field_body *body		);
-		void set_msg_head(enum comm_header h, const string &field_body			);
-		void set_msg_head(enum rqst_header h, const string &field_body			);
-		void set_msg_head(enum rsps_header h, const string &field_body			);
-		void set_msg_head(enum body_header h, const string &field_body			);
-		void set_msg_head(const string &field_name, const class field_body *body);
-		void set_msg_head(const string &field_name, const string &field_body	);
+		void set_msg_line(enum method m,      const char *URL, enum version v		);
+		void set_msg_line(const char *method, const char *URL, enum version v		);
+		void set_msg_line(enum version v, enum stsCode, const char *reason = ""		);
 
-		void set_msg_body(const char *body, string::size_type _size				);
+		void set_msg_head(enum comm_header h, const class field_body *body			);
+		void set_msg_head(enum rqst_header h, const class field_body *body			);
+		void set_msg_head(enum rsps_header h, const class field_body *body			);
+		void set_msg_head(enum body_header h, const class field_body *body			);
+		void set_msg_head(enum MIME_FNAME  h, const class field_body *body			);
+		void set_msg_head(enum comm_header h, const string &field_body				);
+		void set_msg_head(enum rqst_header h, const string &field_body				);
+		void set_msg_head(enum rsps_header h, const string &field_body				);
+		void set_msg_head(enum body_header h, const string &field_body				);
+		void set_msg_head(enum MIME_FNAME  h, const string &field_body  			);
+		void set_msg_head(const string &field_name, const class field_body *body	);
+		void set_msg_head(const string &field_name, const string &field_body		);
 
-		const string pack_msg(void												);
-		bool		 load_msg(const string message								);
+		void set_msg_body(const char *body, string::size_type _size					);
 
-		const string &get_msg_line(void) const noexcept							 ;
+		class mime_entity *set_msg_part(class mime_header &header					);
+		class mime_entity *set_msg_part(void										);
 
-		const string get_msg_method(void) const noexcept						 ;
-		const string get_msg_version(bool dir) const noexcept					 ;
-		const string get_msg_URL(const void *message) const noexcept			 ;
-		const string get_msg_status(void) const noexcept						 ;
+		const string pack_msg(void													);
+		bool		 load_msg(const string message									);
+		bool		 load_msg(const char  *message, string::size_type _size	    	);
 
-		const string get_msg_head(enum MIME_FNAME fname_t) const noexcept		 ;
-		const string get_msg_head(enum comm_header h) const noexcept			 ;
-		const string get_msg_head(enum rqst_header h) const noexcept			 ;
-		const string get_msg_head(enum rsps_header h) const noexcept			 ;
-		const string get_msg_head(enum body_header h) const noexcept			 ;
-		const string get_msg_head(const string &head) const noexcept			 ;
+		const string &get_msg_line(void) const noexcept								 ;
 
-		const string &get_msg_body(string::size_type &_size						);
+		const string get_msg_method(void) const noexcept							 ;
+		const string get_msg_version(bool dir) const noexcept						 ;
+		const string get_msg_URL(const void *message) const noexcept				 ;
+		const string get_msg_status(void) const noexcept							 ;
 
-		const class mime_entity *get_msg_part(string::size_type _inx			);
+		const string get_msg_head(enum MIME_FNAME fname_t) const noexcept			 ;
+		const string get_msg_head(enum comm_header h) const noexcept				 ;
+		const string get_msg_head(enum rqst_header h) const noexcept				 ;
+		const string get_msg_head(enum rsps_header h) const noexcept				 ;
+		const string get_msg_head(enum body_header h) const noexcept				 ;
+		const string get_msg_head(const string &head) const noexcept				 ;
+
+		const string &get_msg_body(void												);
+
+		const class mime_entity *get_msg_part(string::size_type _inx				);
 
 	private:
 		string message_line;
