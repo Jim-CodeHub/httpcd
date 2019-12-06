@@ -28,7 +28,7 @@ int main(void)
 					  part_2_header.set(Content_Transfer_Encoding, "8bit");
 
 	msg.set_msg_part()->set_node(part_2_header, "PART 2 TEST BODY ... ...");
-
+#if 0
 	class mime_header part_3_header;
 					  part_3_header.set(Content_Type, "application/pdf");
 					  part_3_header.set(Content_Transfer_Encoding, "binary");
@@ -37,6 +37,7 @@ int main(void)
 					  sdbody.load("./TharstenCaseStudy_ESP_FINAL.pdf", 0, -1);
 
 	msg.set_msg_part()->set_node(part_3_header, sdbody);
+#endif
 
 	string _message = msg.pack_msg();
 

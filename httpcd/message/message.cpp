@@ -298,13 +298,12 @@ class mime_entity *message::set_msg_part(class mime_header &header)
 }
 
 /**
- *	@brief	    Set mime enity part which under the param 'header' 
+ *	@brief	    Set mime enity part which under the FATHER header
  *	@param[in]  None 
  *	@param[out] None 
  *	@return		mime entity part pointer OR NULL if subtype 'mixed' does not exsists
  *
- *	@note		*Param 'header'
- *					Use this funtion when FATHER HEADER already has been setted
+ *	@note		Use this funtion when FATHER HEADER already has been setted
  *
  *	@note		*Multi part depth
  *					1. The function can be called repeatedly, to set sub-part with return pointer OR
@@ -316,9 +315,7 @@ class mime_entity *message::set_msg_part(class mime_header &header)
  **/
 class mime_entity *message::set_msg_part(void)
 {
-	class mime_header header;
-
-	return this->set_part(header);
+	return this->set_part();
 }
 
 /**

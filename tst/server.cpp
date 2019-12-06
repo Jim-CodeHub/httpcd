@@ -8,12 +8,26 @@ USING_NAMESPACE_HTTPCD;
 
 void msg_cgi(int cfd, const struct sockaddr_in *caddr) 
 {
-	char buff[1000];
+	/**<------------------------------------------------------*/
+	/**< Recv message */
 
-	recv(cfd, buff, sizeof(buff), 0);
-	send(cfd, "Server : Hello client", 14, 0);
+	char _recv[1024*100];
 
-	cout << buff << endl; /**< Print client message */
+	recv(cfd, _recv, sizeof(_recv), 0);
+
+	/**<------------------------------------------------------*/
+	/**< Load message from buff */
+
+	class message msg; msg.load_msg(_recv, sizeof(_recv));
+
+	char _send[] = "Server : Message loaded";
+
+	send(cfd, _send, sizeof(_send), 0);
+
+	/**<------------------------------------------------------*/
+	/**< Load message from buff */
+
+	cout << msg.pack_msg() <<endl;
 }
 
 int main(void)
