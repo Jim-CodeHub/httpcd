@@ -326,7 +326,7 @@ class mime_entity *message::set_msg_part(void)
  **/
 const string message::pack_msg(void)
 {
-	return this->message_line + "\r\n" + this->make();
+	return this->message_line + this->make();
 }
 
 /**
@@ -336,6 +336,7 @@ const string message::pack_msg(void)
  *	@return		ture/flase (reserved interface) 	
  *	@note		*** TO BE SURE param 'entity' has certain size info, If entity contain '\0' 
  **/
+
 bool message::load_msg(const string message)
 {
 	/**<---------------------------------------------------------*/
@@ -397,7 +398,7 @@ const string message::get_msg_method(void) const noexcept
  *	@param[out] None
  *	@return		HTTP message URL 
  **/
-const string message::get_msg_URL(const void *message) const noexcept
+const string message::get_msg_URL() const noexcept
 {
 	class string_token str_tok(message_line, " ");
 
@@ -537,5 +538,19 @@ const string &message::get_msg_body(void)
 const class mime_entity *message::get_msg_part(string::size_type _inx)
 {
 	return this->get_part(_inx);
+}
+
+/**
+ *	@brief	    Clear message
+ *	@param[in]  None 
+ *	@param[out] None 
+ *	@return	    None 
+ **/
+void message::clear(void)
+{
+	this->message_line.clear();
+	this->mime_entity::clear();
+
+	return;
 }
 

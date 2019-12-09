@@ -37,13 +37,14 @@ void httpd::server_init(const char *ip, CGI_T msg_cgi)
  *	@brief	    HTTP server start 
  *	@param[in]  method	- BLOCK/PPC/TPC/SELECT_TPC/POLL_TPC/EPOLL_TPC 
  *	@param[in]  backlog	- Size of listen queue 
+ *	@param[in]  nfds	- Number of poll/epoll structure, set it, if method == POLL_TPC/EPOLL_TPC
  *	@param[out] None
  *	@return		None
  *	@note	    Select Multi-process services are used
  **/
-void httpd::server_emit(int backlog)
+void httpd::server_emit(enum method m, int backlog, nfds_t nfds)
 {
-	socketd_tcp_v4::server_emit(SELECT_TPC, backlog, 0);
+	socketd_tcp_v4::server_emit(m, backlog, nfds);
 
 	return;
 }

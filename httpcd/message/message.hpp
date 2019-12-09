@@ -122,7 +122,7 @@ class message : public mime_message{
 
 		const string get_msg_method(void) const noexcept							 ;
 		const string get_msg_version(bool dir) const noexcept						 ;
-		const string get_msg_URL(const void *message) const noexcept				 ;
+		const string get_msg_URL() const noexcept									 ;
 		const string get_msg_status(void) const noexcept							 ;
 
 		const string get_msg_head(enum MIME_FNAME fname_t) const noexcept			 ;
@@ -135,6 +135,8 @@ class message : public mime_message{
 		const string &get_msg_body(void												);
 
 		const class mime_entity *get_msg_part(string::size_type _inx				);
+
+		void clear(void																);
 
 	private:
 		string message_line;

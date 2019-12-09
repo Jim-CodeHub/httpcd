@@ -1,41 +1,57 @@
 /**-----------------------------------------------------------------------------------------------------------------
- * @file	httpcd.hpp
+ * @file	http_client.hpp
+ * @brief	HTTP client handler AND packetize and depacketize HTTP message
  *
  * Copyright (c) 2019-2019 Jim Zhang 303683086@qq.com
  *------------------------------------------------------------------------------------------------------------------
 */
 
 
-#ifndef __HTTPCD_HPP__
-#define __HTTPCD_HPP__
+#ifndef __HTTP_CLIENT_HPP__
+#define __HTTP_CLIENT_HPP__
 
 
 /*------------------------------------------------------------------------------------------------------------------
  * 
- *										HTTPCD INCLUDES 
+ *										HTTPCD/HTTP_CLIENT INCLUDES 
  *
  *------------------------------------------------------------------------------------------------------------------
 */
 
-#include <httpcd/http_client.hpp>
-#include <httpcd/http_server.hpp>
+#include <httpcd/comm/client/httpc.hpp>
+#include <httpcd/message/message.hpp>
 
 
 namespace NS_HTTPCD{
 
 /*------------------------------------------------------------------------------------------------------------------
  * 
- *										HTTPCD SHORT ALIAS 
+ *										HTTPCD/HTTP_CLIENT DATA BLOCK
  *
  *------------------------------------------------------------------------------------------------------------------
 */
-#define			USING_NAMESPACE_HTTPCD		 using namespace NS_HTTPCD;	 \
-											 using namespace NS_SOCKETCD;\
-											 using namespace NS_LIBMIME;
+
+/**
+ *	@brief HTTP client class and function set 
+ **/
+class http_client : public message, public httpc{
+	public:
+		http_client(const char *ip){ this->init(ip); }				   ;
+
+		void init(const char *ip									  );
+		void emit(int flags = 0										  );
+
+		void recv(int flags = 0, ssize_t _size = 1024*1024 /**< 1M */ );
+
+		//SET, 'set_socket_opt' function to implement more performence 
+
+	private:
+
+};
 
 
 } /* namespace NS_HTTPCD */
 
 
-#endif /*__HTTPCD__HPP__*/
+#endif /*__HTTP_CLIENT_HPP__*/
 

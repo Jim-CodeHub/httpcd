@@ -6,38 +6,56 @@ using namespace std;
 USING_NAMESPACE_HTTPCD;
 
 
-void msg_cgi(int cfd, const struct sockaddr_in *caddr) 
+void msg_cgi(class http_server &server) 
 {
-	/**<------------------------------------------------------*/
-	/**< Recv message */
+	/**<-------------------------------------------------------------------------------*/
+	/**< Recv HTTP message from client */
 
-	char _recv[1024*100];
+	server.recv();
 
-	recv(cfd, _recv, sizeof(_recv), 0);
+	/**<-------------------------------------------------------------------------------*/
+	/**< Parse HTTP message that recived from client */
 
-	/**<------------------------------------------------------*/
-	/**< Load message from buff */
+	cout << "LINE      ::" << server.get_msg_line()			    	     << endl;
 
-	class message msg; msg.load_msg(_recv, sizeof(_recv));
+	cout << "URL       ::" << server.get_msg_URL()				         << endl;
+	cout << "VERSION   ::" << server.get_msg_version(1)				     << endl;
 
-	char _send[] = "Server : Message loaded";
+	cout << "HEAD_CTYPE::" << server.get_msg_head(Content_Type)		     << endl; 
+	//...
 
-	send(cfd, _send, sizeof(_send), 0);
+	cout << "PART0_BODY::" << server.get_msg_part(0)->get_sdbody().get() << endl;
+	cout << "PART1_BODY::" << server.get_msg_part(1)->get_sdbody().get() << endl;
+	//cout << "PART2_BODY::" << server.get_msg_part(2)->get_sdbody().get() << endl;
+	server.get_msg_part(2)->get_sdbody().fill("./copy.pdf");
+	//...
 
-	/**<------------------------------------------------------*/
-	/**< Load message from buff */
+	/**<-------------------------------------------------------------------------------*/
+	/**< Set HTTP message for client */ 
 
-	cout << msg.pack_msg() <<endl;
+	server.clear();
+	server.set_msg_line(HTTP_1_1, _201, "OK");
+
+	server.set_msg_head(Content_Type, "Text/plain");
+	server.set_msg_body("Server has recived message", 26);
+
+	/**<-------------------------------------------------------------------------------*/
+	/**< Send HTTP message to server */
+
+	server.send(); return;
 }
 
 int main(void)
 {
-	class httpd _server;
+	/**<-------------------------------------------------------------------------------*/
+	/**< Init HTTP server */
 
-//	_server.set_deamon(1);
+	class http_server server("127.0.0.1", msg_cgi); /**< OR 'server.init(...)' */
 
-	_server.server_init("127.0.0.1", msg_cgi);
-	_server.server_emit();
+	/**<-------------------------------------------------------------------------------*/
+	/**< Start HTTP server */
+
+	server.emit();
 
 	/**< SHOULD NOT SET ANY CODE BELOW ! */
 
