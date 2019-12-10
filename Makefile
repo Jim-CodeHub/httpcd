@@ -60,9 +60,9 @@ install:
 	$(shell if [ ! -d $(--PREFIX)/lib ]; then mkdir $(--PREFIX)/lib; fi;)
 	@cp $(TARGET) $(--PREFIX)/include -rf
 	@mv ./$(PROJECT).a ./$(PROJECT).so $(--PREFIX)/lib 
-	rm -rf `find ./$(--PREFIX)/include -name "*.o"`
-	rm -rf `find ./$(--PREFIX)/include -name "*.cpp"`
-	rm -rf `find ./$(--PREFIX)/include -name "Makefile"`
+	@rm -rf `find ./$(--PREFIX)/include -name "*.o"`
+	@rm -rf `find ./$(--PREFIX)/include -name "*.cpp"`
+	@rm -rf `find ./$(--PREFIX)/include -name "Makefile"`
 
 tags:
 	@rm -rf ./tags
