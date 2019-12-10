@@ -41,7 +41,7 @@ class http_server : public message, public httpd{
 		void init(const char *ip, void (*_msg_cgi)(class http_server &s)							 );
 		void emit(enum NS_SOCKETCD::method m = SELECT_TPC, int backlog=128, nfds_t nfds=0			 );
 
-		void recv(int flags = 0, ssize_t _size = 1024*1024 /**< 1M */								 );
+		void recv(ssize_t _size = 1024*1024 /**< 1M */												 );
 		void send(int flags = 0																		 );
 
 	protected:

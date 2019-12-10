@@ -51,16 +51,17 @@ void http_client::emit(int flags)
 
 /**
  *	@brief	    recv http message 
- *	@param[in]  flags - socket 'recv' flags options 
  *	@param[in]  _size - size of recive buffer 
  *	@param[out] None
  *	@return		None
  **/
-void http_client::recv(int flags, ssize_t _size)
+void http_client::recv(ssize_t _size)
 {
+	this->clear(); /**< Clear MIME message tree */
+
 	char *message = new char[_size];
 
-	ssize_t data_size = data_recv(message, _size, flags);
+	ssize_t data_size = this->data_recv(message, _size);
 
 	this->load_msg(message, data_size);
 

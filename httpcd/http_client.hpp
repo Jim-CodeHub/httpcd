@@ -41,7 +41,7 @@ class http_client : public message, public httpc{
 		void init(const char *ip									  );
 		void emit(int flags = 0										  );
 
-		void recv(int flags = 0, ssize_t _size = 1024*1024 /**< 1M */ );
+		void recv(ssize_t _size = 1024*1024 /**< 1M */				  );
 
 		//SET, 'set_socket_opt' function to implement more performence 
 

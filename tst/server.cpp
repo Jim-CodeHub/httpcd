@@ -26,14 +26,14 @@ void msg_cgi(class http_server &server)
 
 	cout << "PART0_BODY::" << server.get_msg_part(0)->get_sdbody().get() << endl;
 	cout << "PART1_BODY::" << server.get_msg_part(1)->get_sdbody().get() << endl;
-	//cout << "PART2_BODY::" << server.get_msg_part(2)->get_sdbody().get() << endl;
-	server.get_msg_part(2)->get_sdbody().fill("./copy.pdf");
+	server.get_msg_part(2)->get_sdbody().fill("./copy.pdf"); /**< PART2_BODY   */
 	//...
 
 	/**<-------------------------------------------------------------------------------*/
 	/**< Set HTTP message for client */ 
 
 	server.clear();
+
 	server.set_msg_line(HTTP_1_1, _201, "OK");
 
 	server.set_msg_head(Content_Type, "Text/plain");

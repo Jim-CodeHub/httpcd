@@ -68,18 +68,15 @@ void http_server::emit(enum NS_SOCKETCD::method m, int backlog, nfds_t nfds)
 
 /**
  *	@brief	    Recive http message from client 
- *	@param[in]  flags - socket 'recv' flags options 
  *	@param[in]  _size - size of recive buffer 
  *	@param[out] None
  *	@return		None
  **/
-void http_server::recv(int flags, ssize_t _size)
+void http_server::recv(ssize_t _size)
 {
 	char *message = new char[_size];
 
-	ssize_t data_size = ::recv(this->cfd, message, _size, flags);
-
-	if (-1 == data_size) {perror("Data rcve error"); exit(-1);}
+	ssize_t data_size = this->data_recv(this->cfd, message, _size);
 
 	this->load_msg(message, data_size);
 
@@ -98,7 +95,7 @@ void http_server::send(int flags)
 
 	*message = this->pack_msg();
 
-	::send(this->cfd, (void *)(message->data()), (message->size()), flags);
+	this->data_send(this->cfd,(void *)(message->data()), (message->size()), flags);
 
 	delete message; return;
 }

@@ -336,7 +336,6 @@ const string message::pack_msg(void)
  *	@return		ture/flase (reserved interface) 	
  *	@note		*** TO BE SURE param 'entity' has certain size info, If entity contain '\0' 
  **/
-
 bool message::load_msg(const string message)
 {
 	/**<---------------------------------------------------------*/

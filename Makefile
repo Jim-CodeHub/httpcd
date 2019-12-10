@@ -72,7 +72,7 @@ tags:
 		  --exclude="*.so"			\
 		  --exclude="*.elf"			\
 		  --exclude="*.map"			\
-		  --exclude="*.lss" -R .
+		  --exclude="*.lss" -Rn .
 
 clean:
 	for dir in $(SUBDIRS); do 		\
