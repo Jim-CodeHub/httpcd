@@ -71,12 +71,32 @@ void http_server::emit(enum NS_SOCKETCD::method m, int backlog, nfds_t nfds)
  *	@param[in]  _size - size of recive buffer 
  *	@param[out] None
  *	@return		None
+ *	@note		The function perform a loop style, and 
+ *				it cannot be returned if the peer does not close the file descriptor after data send
  **/
 void http_server::recv(ssize_t _size)
 {
 	char *message = new char[_size];
 
 	ssize_t data_size = this->data_recv(this->cfd, message, _size);
+
+	this->load_msg(message, data_size);
+
+	delete [] message; return;
+}
+
+/**
+ *	@brief	    Recive http message from client 
+ *	@param[in]  _size - size of recive buffer 
+ *	@param[in]  flags - socket 'recv' flags options 
+ *	@param[out] None
+ *	@return		None
+ **/
+void http_server::recv(ssize_t _size, int flags)
+{
+	char *message = new char[_size];
+
+	ssize_t data_size = this->data_recv(this->cfd, message, _size, flags);
 
 	this->load_msg(message, data_size);
 

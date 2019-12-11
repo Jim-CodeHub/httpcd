@@ -54,6 +54,8 @@ void http_client::emit(int flags)
  *	@param[in]  _size - size of recive buffer 
  *	@param[out] None
  *	@return		None
+ *	@note		The function perform a loop style, and 
+ *				it cannot be returned if the peer does not close the file descriptor after data send
  **/
 void http_client::recv(ssize_t _size)
 {
@@ -68,3 +70,22 @@ void http_client::recv(ssize_t _size)
 	delete [] message; return;
 }
 
+/**
+ *	@brief	    recv http message 
+ *	@param[in]  _size - size of recive buffer 
+ *	@param[in]  flags - socket 'recv' flags options 
+ *	@param[out] None
+ *	@return		None
+ **/
+void http_client::recv(ssize_t _size, int flags)
+{
+	this->clear(); /**< Clear MIME message tree */
+
+	char *message = new char[_size];
+
+	ssize_t data_size = this->data_recv(message, _size, flags);
+
+	this->load_msg(message, data_size);
+
+	delete [] message; return;
+}

@@ -43,6 +43,7 @@ class http_server : public message, public httpd{
 		void emit(enum NS_SOCKETCD::method m = SELECT_TPC, int backlog=128, nfds_t nfds=0			 );
 
 		void recv(ssize_t _size = 1024*1024 /**< 1M */												 );
+		void recv(ssize_t _size = 1024*1024 /**< 1M */, int flags=0									 );
 		void send(int flags = 0																		 );
 
 	protected:
