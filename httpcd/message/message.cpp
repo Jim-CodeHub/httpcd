@@ -326,6 +326,11 @@ class mime_entity *message::set_msg_part(void)
  **/
 const string message::pack_msg(void)
 {
+	if (string::npos == this->message_line.find("\r\n"))
+	{
+		this->message_line + "\r\n"; /**< Prevents direct packaging after receiving from the receiver */
+	}
+
 	return this->message_line + this->make();
 }
 
