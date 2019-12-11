@@ -36,6 +36,7 @@ namespace NS_HTTPCD{
  **/
 class http_server : public message, public httpd{
 	public:
+		http_server(){}; /**< Empty structure */
 		http_server(const char *ip, void (*_msg_cgi)(class http_server &s)){this->init(ip, _msg_cgi);}; 
 
 		void init(const char *ip, void (*_msg_cgi)(class http_server &s)							 );

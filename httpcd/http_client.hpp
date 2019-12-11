@@ -36,6 +36,7 @@ namespace NS_HTTPCD{
  **/
 class http_client : public message, public httpc{
 	public:
+		http_client(){}; /**< Empty structure */
 		http_client(const char *ip){ this->init(ip); }				   ;
 
 		void init(const char *ip									  );
