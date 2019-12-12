@@ -51,7 +51,7 @@ class http_client : public message, public httpc{
 		//SET, 'set_socket_opt' function to implement more performence 
 
 	private:
-		ssize_t rcv_size;
+		ssize_t rcv_size = 1024*1024; /**< Default 1M */
 
 };
 

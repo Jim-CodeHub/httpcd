@@ -55,7 +55,7 @@ class http_server : public message, public httpd{
 		void msg_cgi(int cfd, const struct sockaddr_in *caddr, HTTP_CGI_T _msg_cgi		  				);
 
 	protected:
-		int cfd; ssize_t rcv_size;
+		int cfd; ssize_t rcv_size = 1024*1024; /**< Default 1M */
 };
 
 
