@@ -28,7 +28,7 @@ using namespace NS_HTTPCD;
  *	@param[out] None
  *	@return		None
  **/
-void http_server::msg_cgi(int cfd, const struct sockaddr_in *caddr, void (*_msg_cgi)(class http_server &s))
+void http_server::msg_cgi(int cfd, const struct sockaddr_in *caddr, HTTP_CGI_T _msg_cgi)
 {
 	this->cfd = cfd; _msg_cgi(*this);
 
@@ -41,7 +41,7 @@ void http_server::msg_cgi(int cfd, const struct sockaddr_in *caddr, void (*_msg_
  *	@param[out] None
  *	@return		None
  **/
-void http_server::init(const char *ip, void (*_msg_cgi)(class http_server &s))
+void http_server::init(const char *ip, HTTP_CGI_T _msg_cgi)
 {
 	CGI_T f = bind(&http_server::msg_cgi, this, std::placeholders::_1, std::placeholders::_2, _msg_cgi);
 

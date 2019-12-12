@@ -31,23 +31,25 @@ namespace NS_HTTPCD{
  *------------------------------------------------------------------------------------------------------------------
 */
 
+typedef std::function<void(class http_server &s)> HTTP_CGI_T;
+
 /**
  *	@brief HTTP server class and function set 
  **/
 class http_server : public message, public httpd{
 	public:
 		http_server(){}; /**< Empty structure */
-		http_server(const char *ip, void (*_msg_cgi)(class http_server &s)){this->init(ip, _msg_cgi);}; 
+		http_server(const char *ip, HTTP_CGI_T _msg_cgi){this->init(ip, _msg_cgi);}		   ; 
 
-		void init(const char *ip, void (*_msg_cgi)(class http_server &s)							 );
-		void emit(enum NS_SOCKETCD::method m = SELECT_TPC, int backlog=128, nfds_t nfds=0			 );
+		void init(const char *ip, HTTP_CGI_T _msg_cgi									  );
+		void emit(enum NS_SOCKETCD::method m = SELECT_TPC, int backlog=128, nfds_t nfds=0 );
 
-		void recv(ssize_t _size = 1024*1024 /**< 1M */												 );
-		void recv(ssize_t _size = 1024*1024 /**< 1M */, int flags=0									 );
-		void send(int flags = 0																		 );
+		void recv(ssize_t _size = 1024*1024 /**< 1M */									  );
+		void recv(ssize_t _size = 1024*1024 /**< 1M */, int flags=0						  );
+		void send(int flags = 0															  );
 
 	protected:
-		void msg_cgi(int cfd, const struct sockaddr_in *caddr, void (*_msg_cgi)(class http_server &s));
+		void msg_cgi(int cfd, const struct sockaddr_in *caddr, HTTP_CGI_T _msg_cgi		  );
 
 	protected:
 		int cfd;
