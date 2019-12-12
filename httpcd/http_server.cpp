@@ -68,7 +68,7 @@ void http_server::emit(enum NS_SOCKETCD::method m, int backlog, nfds_t nfds)
 
 /**
  *	@brief	    Recive http message from client 
- *	@param[in]  _size - size of recive buffer 
+ *	@param[in]  None 
  *	@param[out] None
  *	@return		None
  *	@note		The function perform a loop style, and 
