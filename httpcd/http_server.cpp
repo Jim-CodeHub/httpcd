@@ -74,11 +74,11 @@ void http_server::emit(enum NS_SOCKETCD::method m, int backlog, nfds_t nfds)
  *	@note		The function perform a loop style, and 
  *				it cannot be returned if the peer does not close the file descriptor after data send
  **/
-void http_server::recv(ssize_t _size)
+void http_server::recv(void)
 {
-	char *message = new char[_size];
+	char *message = new char[rcv_size];
 
-	ssize_t data_size = this->data_recv(this->cfd, message, _size);
+	ssize_t data_size = this->data_recv(this->cfd, message, rcv_size);
 
 	this->load_msg(message, data_size);
 
@@ -87,20 +87,32 @@ void http_server::recv(ssize_t _size)
 
 /**
  *	@brief	    Recive http message from client 
- *	@param[in]  _size - size of recive buffer 
  *	@param[in]  flags - socket 'recv' flags options 
  *	@param[out] None
  *	@return		None
  **/
-void http_server::recv(ssize_t _size, int flags)
+void http_server::recv(int flags)
 {
-	char *message = new char[_size];
+	char *message = new char[rcv_size];
 
-	ssize_t data_size = this->data_recv(this->cfd, message, _size, flags);
+	ssize_t data_size = this->data_recv(this->cfd, message, rcv_size, flags);
 
 	this->load_msg(message, data_size);
 
 	delete [] message; return;
+}
+
+/**
+ *	@brief	    Reset recive buff size 
+ *	@param[in]  _size 
+ *	@param[out] None
+ *	@return		None
+ **/
+void http_server::rst_rcv_size(ssize_t _size)
+{
+	this->rcv_size = (_size <= 0)?(1024*1024):_size;
+
+	return;
 }
 
 /**
