@@ -21,10 +21,6 @@ CXXFLAGS	   +=   -I$(CURDIR)/contrib/$(DEP_LIBMIME)/install/include
 CXXFLAGS	   +=   -I$(CURDIR)/contrib/$(DEP_SOCKETCD)/install/include
 #CXXFLAGS		+=  -g
 
-LD_CXXFLAGS	    =   -I$(CURDIR)/contrib/$(DEP_LIBMIME)/install/include
-LD_CXXFLAGS	   +=   -I$(CURDIR)/contrib/$(DEP_SOCKETCD)/install/include
-LD_CXXFLAGS	   +=   -I$(CURDIR)
-
 SUBDIRS 		=   $(TARGET) 
 
 export CXX CXXFLAGS TARGET
@@ -40,7 +36,7 @@ export CXX CXXFLAGS TARGET
 
 all:$(SUBDIRS)
 	ar -rcs $(PROJECT).a $(shell find ./$(TARGET) -name "*.o")
-	$(CXX) -fPIC -shared $(shell find ./$(TARGET) -name "*.cpp") $(LD_CXXFLAGS) -o $(PROJECT).so
+	$(CXX) -fPIC -shared  $(CXXFLAGS) $(shell find ./$(TARGET) -name "*.cpp") -o $(PROJECT).so
 
 $(SUBDIRS):
 	$(MAKE) -C $@	
