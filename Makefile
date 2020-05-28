@@ -7,7 +7,7 @@
 TARGET		    =   httpcd
 PROJECT			=   lib$(TARGET)
 
-CXX				=	g++
+CXX				= 	g++	
 
 DEP_LIBMIME		=	libmime
 DEP_SOCKETCD	= 	socketcd

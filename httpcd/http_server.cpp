@@ -37,7 +37,8 @@ void http_server::msg_cgi(int cfd, const struct sockaddr_in *caddr, HTTP_CGI_T _
 
 /**
  *	@brief	    Init http server 
- *	@param[in]  ip - IP address 
+ *	@param[in]  ip			- IP address 
+ *	@param[in]  _msg_cgi	- message handler 
  *	@param[out] None
  *	@return		None
  **/
