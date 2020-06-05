@@ -6,8 +6,9 @@
 
 TARGET		    =   httpcd
 PROJECT			=   lib$(TARGET)
+VERSION			=	0.1
 
-CXX				= 	g++	
+CXX				= 	arm-cortex_a9-linux-gnueabi-g++	
 
 DEP_LIBMIME		=	libmime
 DEP_SOCKETCD	= 	socketcd
@@ -36,7 +37,8 @@ export CXX CXXFLAGS TARGET
 
 all:$(SUBDIRS)
 	ar -rcs $(PROJECT).a $(shell find ./$(TARGET) -name "*.o")
-	$(CXX) -fPIC -shared  $(CXXFLAGS) $(shell find ./$(TARGET) -name "*.cpp") -o $(PROJECT).so
+	$(CXX) -fPIC -shared  $(CXXFLAGS) $(shell find ./$(TARGET) -name "*.cpp") -o $(PROJECT).so.$(VERSION)
+	ln -s $(PROJECT).so.$(VERSION) $(PROJECT).so 
 
 $(SUBDIRS):
 	$(MAKE) -C $@	
@@ -75,4 +77,6 @@ clean:
 		$(MAKE) -C $$dir clean;		\
 	done
 	@rm -rf $(shell find ./ -name "*.o")
+	@rm -rf $(PROJECT).*
+	@rm -rf install
 

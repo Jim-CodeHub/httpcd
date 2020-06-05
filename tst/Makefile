@@ -1,5 +1,5 @@
 
-OBJS    = client server
+OBJS    = client server download
 SUBDIRS = 
 
 PATH_LIBMIME 	=	$(shell dirname `pwd`)/contrib/libmime/install/lib

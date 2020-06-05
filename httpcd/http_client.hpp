@@ -36,19 +36,21 @@ namespace NS_HTTPCD{
  **/
 class http_client : public message, public httpc{
 	public:
-		http_client(){ this->rcv_size = 1024*1024; /**< 1M */ }; /**< Empty structure */
 		http_client(const char *ip){ this->rcv_size = 1024*1024; this->init(ip); }	   ;
 
-		void init(const char *ip													  );
 		void emit(int flags = 0														  );
 
 		void recv(																	  );
-		void recv(int flags=0														  );
+		void recv(int flags															  );
 
 		void rst_rcv_size(ssize_t _size												  );
 
 
 		//SET, 'set_socket_opt' function to implement more performence 
+
+	protected:
+		http_client(){ this->rcv_size = 1024*1024; /**< 1M */ }; /**< Empty structure */
+		void init(const char *ip													  );
 
 	private:
 		ssize_t rcv_size = 1024*1024; /**< Default 1M */
