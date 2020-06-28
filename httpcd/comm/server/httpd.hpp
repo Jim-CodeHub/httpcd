@@ -40,6 +40,7 @@ namespace NS_HTTPCD{
 class httpd : public socketd_tcp_v4{
 	public:
 		void server_init(const char *ip, CGI_T msg_cgi											);
+		void server_init(const char *ip, in_port_t port, CGI_T msg_cgi							);
 		void server_emit(enum NS_SOCKETCD::method m = SELECT_TPC, int backlog=128, nfds_t nfds=0);
 
 	private:

@@ -39,7 +39,8 @@ namespace NS_HTTPCD{
  **/
 class httpc : public socketc_tcp_v4{
 	public:
-		void client_init(const char *ip);
+		int client_init( const char *ip					);
+		int client_init( const char *ip, in_port_t port );
 
 		//url functions, DNS catch TBD
 

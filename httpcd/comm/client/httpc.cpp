@@ -23,12 +23,22 @@ using namespace NS_HTTPCD;
  *	@brief	    HTTP client init 
  *	@param[in]  ip - server ip address 
  *	@param[out] None
- *	@return		None
+ *	@return		Standard sockect connect error
  **/
-void httpc::client_init(const char *ip)
+int httpc::client_init( const char *ip				   )
 {
-	socketc_tcp_v4::client_init(ip, SOCKETCD_PORT_HTTP);
+	return socketc_tcp_v4::client_init(ip, SOCKETCD_PORT_HTTP);
+}
 
-	return;
+/**
+ *	@brief	    HTTP client init 
+ *	@param[in]  ip		- server ip address 
+ *	@param[in]  port	- Application layer protocol port (for none-standard HTTP port)
+ *	@param[out] None
+ *	@return		Standard sockect connect error
+ **/
+int httpc::client_init( const char *ip, in_port_t port )
+{
+	return socketc_tcp_v4::client_init( ip, port );
 }
 
