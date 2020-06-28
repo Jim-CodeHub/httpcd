@@ -17,7 +17,9 @@ int main(void)
 	list<string>::iterator _big = LS.begin(), _end = LS.end();
 
 
-	class http_client client((*_big).c_str());
+	class http_client client;	
+					  client.init((*_big).c_str());
+
 	client.rst_rcv_size(1024*1024*100); //100M
 
 	client.set_msg_line( GET, URLs, HTTP_1_0);
