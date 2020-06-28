@@ -35,18 +35,28 @@ void http_server::msg_cgi(int cfd, const struct sockaddr_in *caddr, HTTP_CGI_T _
 	return;
 }
 
-/**
- *	@brief	    Init http server 
- *	@param[in]  ip			- IP address 
- *	@param[in]  _msg_cgi	- message handler 
- *	@param[out] None
- *	@return		None
- **/
 void http_server::init(const char *ip, HTTP_CGI_T _msg_cgi)
 {
 	CGI_T f = bind(&http_server::msg_cgi, this, std::placeholders::_1, std::placeholders::_2, _msg_cgi);
 
 	this->server_init(ip, f);
+
+	return;
+}
+
+/**
+ *	@brief	    Init http server 
+ *	@param[in]  ip			- IP address 
+ *	@param[in]  port		- Application layer protocol port (for none-standard HTTP port)
+ *	@param[in]  _msg_cgi	- message handler 
+ *	@param[out] None
+ *	@return		None
+ **/
+void http_server::init(const char *ip, in_port_t port, HTTP_CGI_T _msg_cgi)
+{
+	CGI_T f = bind(&http_server::msg_cgi, this, std::placeholders::_1, std::placeholders::_2, _msg_cgi);
+
+	this->server_init(ip, port, f);
 
 	return;
 }

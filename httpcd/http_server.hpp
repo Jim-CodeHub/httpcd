@@ -38,7 +38,8 @@ typedef std::function<void(class http_server &s)> HTTP_CGI_T;
  **/
 class http_server : public message, public httpd{
 	public:
-		http_server(const char *ip, HTTP_CGI_T _msg_cgi){rcv_size = 1024*1024; this->init(ip, _msg_cgi);}; 
+		http_server(const char *ip,					HTTP_CGI_T _msg_cgi){rcv_size = 1024*1024; this->init(ip,		_msg_cgi);}; 
+		http_server(const char *ip, in_port_t port, HTTP_CGI_T _msg_cgi){rcv_size = 1024*1024; this->init(ip, port, _msg_cgi);}; 
 
 		void emit(enum NS_SOCKETCD::method m = SELECT_TPC, int backlog=128, nfds_t nfds=0 				);
 
@@ -51,7 +52,8 @@ class http_server : public message, public httpd{
 
 	protected:
 		http_server(){ rcv_size = 1024*1024; /**< 1M */ }; /**< Empty structure */
-		void init(const char *ip, HTTP_CGI_T _msg_cgi													);
+		void init(const char *ip,				  HTTP_CGI_T _msg_cgi									);
+		void init(const char *ip, in_port_t port, HTTP_CGI_T _msg_cgi									);
 
 		void msg_cgi(int cfd, const struct sockaddr_in *caddr, HTTP_CGI_T _msg_cgi		  				);
 
