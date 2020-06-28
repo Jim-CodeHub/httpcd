@@ -8,7 +8,7 @@ TARGET		    =   httpcd
 PROJECT			=   lib$(TARGET)
 VERSION			=	0.1
 
-CXX				= 	arm-cortex_a9-linux-gnueabi-g++	
+CXX				=   g++	
 
 DEP_LIBMIME		=	libmime
 DEP_SOCKETCD	= 	socketcd
