@@ -33,7 +33,7 @@ export CXX CXXFLAGS TARGET
 #																									   #
 #-------------------------------------------------------------------------------------------------------
 
-.PHONY: all clean install $(SUBDIRS) tst contrib tags
+.PHONY: all clean install $(SUBDIRS) demo contrib tags
 
 all:$(SUBDIRS)
 	ar -rcs $(PROJECT).a $(shell find ./$(TARGET) -name "*.o")
@@ -43,8 +43,8 @@ all:$(SUBDIRS)
 $(SUBDIRS):
 	$(MAKE) -C $@	
 
-tst:
-	$(MAKE) -C tst
+demo:
+	$(MAKE) -C demo 
 
 contrib:
 	$(MAKE) -C contrib/$(DEP_LIBMIME)

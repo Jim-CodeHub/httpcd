@@ -4,7 +4,8 @@
 using namespace std;
 USING_NAMESPACE_HTTPCD;
 
-#define  URLs		"https://mirrors.edge.kernel.org/pub/linux/docs/lkml/reporting-bugs.html"
+//#define  URLs		"https://mirrors.edge.kernel.org:80/pub/linux/docs/lkml/reporting-bugs.html"
+#define  URLs		"http://192.168.1.104:9090/jdf/CsXWimA9kxa74A7M.jdf"
 
 int main(void)
 {
@@ -16,9 +17,10 @@ int main(void)
 
 	list<string>::iterator _big = LS.begin(), _end = LS.end();
 
+	int PORT = (-1==URL.getPort())?80:URL.getPort();
 
 	class http_client client;	
-					  client.init((*_big).c_str());
+					  client.init((*_big).c_str(), PORT);
 
 	client.rst_rcv_size(1024*1024*100); //100M
 
@@ -29,7 +31,7 @@ int main(void)
 
 	client.emit();
 
-	cout << "Request IP	List: " << endl;
+	cout << "Request IP List: " << endl;
 
 	for ( ; _big != _end; _big++ ) 
 	{
@@ -38,9 +40,9 @@ int main(void)
 
 	client.recv();
 
-	cout << "Response Line	: " << client.get_msg_line() <<endl;
+	cout << "Response Line: " << client.get_msg_line() <<endl;
 
-	FILE *fp = fopen("./test.html", "w");
+	FILE *fp = fopen("./alces.jdf", "w");
 
 	string body = client.get_msg_body();
 
