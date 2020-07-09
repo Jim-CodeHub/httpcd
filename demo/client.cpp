@@ -11,8 +11,30 @@ int main(void)
 	/**< Init HTTP client */
 
 	class http_client client;
-					  client.init("127.0.0.1"); 
 
+	switch ( client.init("127.0.0.1") ) /**< Detect client connect error. */
+	{
+		case ENETUNREACH : 
+			cout << "Network is unreachable" << endl;
+			exit(-1);
+			break;
+		case ETIMEDOUT	 :
+			cout << "Timeout while attempting connection" << endl;
+			exit(-1);
+			break;
+		case ECONNREFUSED:
+			cout << "Connect refused" << endl;
+			exit(-1);
+			break;
+
+			/**< MAY BE SOME HANDLER FOR UPON ERRORS, INSTEAD OF 'exit()'. */
+
+		case -1:
+			cout << "sockect bind error" <<endl;
+			exit(-1);
+
+		default:; 
+	}
 
 	/**<-------------------------------------------------------------------------------*/
 	/**< Set HTTP message */
@@ -21,6 +43,7 @@ int main(void)
 
 	client.set_msg_head(Content_Type, "multipart/related");
 	client.set_msg_head(Content_Transfer_Encoding, "7bit");
+	client.set_msg_head(Content_Length, "1000"); //get_body_size() is not usefull for client for now
 
 	class mime_header part_1_header;
 					  part_1_header.set(Content_Type, "application/vnd.cip4 - jmf + xml");
@@ -42,7 +65,6 @@ int main(void)
 					  sdbody.load("./TharstenCaseStudy_ESP_FINAL.pdf", 0, -1);
 
 	client.set_msg_part()->set_node(part_3_header, sdbody);
-
 
 	/**<-------------------------------------------------------------------------------*/
 	/**< Send HTTP message to server */

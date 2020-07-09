@@ -115,7 +115,7 @@ class message : public mime_message{
 		class mime_entity *set_msg_part(void										);
 
 		const string pack_msg(void													);
-		bool		 load_msg(const string message									);
+		bool		 load_msg(const string &message									);
 		bool		 load_msg(const char  *message, string::size_type _size	    	);
 
 		const string &get_msg_line(void) const noexcept								 ;
@@ -133,6 +133,8 @@ class message : public mime_message{
 		const string get_msg_head(const string &head) const noexcept				 ;
 
 		const string &get_msg_body(void												);
+
+		ssize_t		 get_body_size(void												);
 
 		const class mime_entity *get_msg_part(string::size_type _inx				);
 

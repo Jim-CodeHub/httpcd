@@ -8,7 +8,6 @@
 
 #include <httpcd/http_server.hpp>
 
-
 using namespace NS_HTTPCD;
 
 
@@ -35,6 +34,38 @@ void http_server::msg_cgi(int cfd, const struct sockaddr_in *caddr, HTTP_CGI_T _
 	return;
 }
 
+/**
+ *	@brief	    Init http server 
+ *	@param[in]  ip			- IP address 
+ *	@param[in]  _msg_cgi	- message handler 
+ *	@param[out] None
+ *	@return		None
+ **/
+http_server::http_server(const char *ip, HTTP_CGI_T _msg_cgi)
+{
+	rcv_size = HTTPCD_DFSIZE_RECV; this->init(ip, _msg_cgi);
+}
+
+/**
+ *	@brief	    Init http server 
+ *	@param[in]  ip			- IP address 
+ *	@param[in]  port		- Application layer protocol port (for none-standard HTTP port)
+ *	@param[in]  _msg_cgi	- message handler 
+ *	@param[out] None
+ *	@return		None
+ **/
+http_server::http_server(const char *ip, in_port_t port, HTTP_CGI_T _msg_cgi)
+{
+	rcv_size = HTTPCD_DFSIZE_RECV; this->init(ip, port, _msg_cgi);
+} 
+
+/**
+ *	@brief	    Init http server 
+ *	@param[in]  ip			- IP address 
+ *	@param[in]  _msg_cgi	- message handler 
+ *	@param[out] None
+ *	@return		None
+ **/
 void http_server::init(const char *ip, HTTP_CGI_T _msg_cgi)
 {
 	CGI_T f = bind(&http_server::msg_cgi, this, std::placeholders::_1, std::placeholders::_2, _msg_cgi);
@@ -79,38 +110,74 @@ void http_server::emit(enum NS_SOCKETCD::method m, int backlog, nfds_t nfds)
 
 /**
  *	@brief	    Recive http message from client 
- *	@param[in]  None 
+ *	@param[in]  msg_len		-	http client message length 
  *	@param[out] None
  *	@return		None
- *	@note		The function perform a loop style, and 
- *				it cannot be returned if the peer does not close the file descriptor after data send
+ *	@note		If 'Content-Length' is not exsist, msg_len will be used
  **/
-void http_server::recv(void)
+void http_server::recv( ssize_t msg_len )
 {
-	char *message = new char[rcv_size];
+	char *message	= new char[rcv_size];
+	char *p			= message;
 
-	ssize_t data_size = this->data_recv(this->cfd, message, rcv_size);
+	memset( message, 0, rcv_size );
 
-	this->load_msg(message, data_size);
+	/** ------------------------------------------------------------------------- */
+	/**< Load HTTP header. */
 
-	delete [] message; return;
-}
+	char	ch		= 0;
+	ssize_t rnCnt	= 0; 
+	while ( this->data_recv(this->cfd, &ch, 1, 0) )
+	{
+		*p= ch; p++;
 
-/**
- *	@brief	    Recive http message from client 
- *	@param[in]  flags - socket 'recv' flags options 
- *	@param[out] None
- *	@return		None
- **/
-void http_server::recv(int flags)
-{
-	char *message = new char[rcv_size];
+		switch ( rnCnt ) /**< Detecte '\r\n\r\n '*/
+		{
+			case 0:
+				rnCnt = (ch == '\r')?(rnCnt + 1):0; 
+				break;
+			case 1:
+				rnCnt = (ch == '\n')?(rnCnt + 1):0; 
+				break;
+			case 2: 
+				rnCnt = (ch == '\r')?(rnCnt + 1):0; 
+				break;
+			case 3:
+				rnCnt = (ch == '\n')?(rnCnt + 1):0; 
+				break;
+			default: ;
+		}
 
-	ssize_t data_size = this->data_recv(this->cfd, message, rcv_size, flags);
+		if ( 4 == rnCnt ) { break; } /**< HTTP Header Pass. */
+	}
 
-	this->load_msg(message, data_size);
+	/** ------------------------------------------------------------------------- */
+	/**< Get Content-Length. */
 
-	delete [] message; return;
+	this->load_msg(message, p - message);
+
+	ssize_t body_len = atoi( this->get_msg_head(Content_Length).c_str() );
+
+	if ( 0 == body_len ) { /**< Field  Content-Length is not exists. */
+		body_len = msg_len - (p-message); 
+	}
+
+	/** ------------------------------------------------------------------------- */
+	/**< Get HTTP body. */
+
+	ssize_t recvLen  = 0;
+	while ( (recvLen = this->data_recv(this->cfd, p, rcv_size, 0), recvLen) )
+	{
+		p += recvLen;
+
+		if ( recvLen >= body_len ) { break; }
+	}
+
+	this->load_msg(message, p - message);
+
+	delete [] message; message = NULL; 
+
+	return;
 }
 
 /**
@@ -118,6 +185,7 @@ void http_server::recv(int flags)
  *	@param[in]  _size 
  *	@param[out] None
  *	@return		None
+ *	@note		The function MUST BE used BEFOR function recv()
  **/
 void http_server::rst_rcv_size(ssize_t _size)
 {

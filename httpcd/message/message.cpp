@@ -341,7 +341,7 @@ const string message::pack_msg(void)
  *	@return		ture/flase (reserved interface) 	
  *	@note		*** TO BE SURE param 'entity' has certain size info, If entity contain '\0' 
  **/
-bool message::load_msg(const string message)
+bool message::load_msg(const string &message)
 {
 	/**<---------------------------------------------------------*/
 	/**< Load HTTP message line */
@@ -521,14 +521,23 @@ const string message::get_msg_head(const string &head) const noexcept
 }
 
 /**
- *	@brief	    Get message body and certain size 
+ *	@brief	    Get message body
  *	@param[in]  None 
  *	@return	    Message body	
- *	@note		Get body size info by 'string xx.size()'
  **/
 const string &message::get_msg_body(void)
 {
 	return this->sdbody.get();
+}
+
+/**
+ *	@brief	    Get message body size 
+ *	@param[in]  None 
+ *	@return	    Message body size
+ **/
+ssize_t		 message::get_body_size(void)
+{
+	return this->sdbody.size();
 }
 
 /**
